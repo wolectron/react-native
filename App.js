@@ -11,6 +11,8 @@ import HomeScreen from './app/screens/HomeScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './app/screens/LoginScreen';
+import ContentScreen from './app/screens/ContentScreen';
+import YoutubeScreen from './app/screens/YoutubeScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +24,7 @@ export default function App() {
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator>
-          <Stack.Screen
+              <Stack.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{ 
@@ -42,6 +44,26 @@ export default function App() {
                 name="Login"
                 component={LoginScreen}
                 options={{ 
+                  title: null,
+                  headerStyle: {
+                    backgroundColor: '#ffffff',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="Content"
+                component={ContentScreen}
+                options={{
+                  title: null,
+                  headerStyle: {
+                    backgroundColor: '#ffffff',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="Youtube"
+                component={YoutubeScreen}
+                options={{
                   title: null,
                   headerStyle: {
                     backgroundColor: '#ffffff',

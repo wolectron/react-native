@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Alert } from 'react-native';
-import { FlatListSlider } from 'react-native-flatlist-slider';
-import Preview from "../components/Preview";
+import React from 'react'
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native'
+import { FlatListSlider } from 'react-native-flatlist-slider'
+import Preview from "../components/Preview"
 
 const images = [
   {
@@ -21,20 +21,22 @@ function HomeScreen(props) {
         data={images}
         width={275}
         component={<Preview />}
-        onPress={item => alert(JSON.stringify(item))}
+        onPress={item => props.navigation.navigate('Content')}
         indicatorActiveWidth={40}
         contentContainerStyle={{paddingHorizontal: 16}}
+        autoscroll={false}
       />
       <FlatListSlider
         data={images}
         width={275}
         component={<Preview />}
-        onPress={item => alert(JSON.stringify(item))}
+        onPress={item => props.navigation.navigate('Youtube')}
         indicatorActiveWidth={40}
         contentContainerStyle={{paddingHorizontal: 16}}
+        autoscroll={false}
       />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -42,6 +44,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
   }
-});
+})
 
-export default HomeScreen;
+export default HomeScreen
