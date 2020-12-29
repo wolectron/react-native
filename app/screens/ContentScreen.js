@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native'
 import { Video } from 'expo-av'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 function ContentScreen(props) {
+    const [orientationIsLandscape, setOrientationIsLandscape] = useState(false)
+
     return (
         <SafeAreaView style={styles.container}>
             <Video
@@ -15,6 +18,14 @@ function ContentScreen(props) {
                 isLooping
                 style={{ flex: 1 }}
                 useNativeControls
+                onFullscreenUpdate={async (state) => {
+                    if(state.fullscreenUpdate % 2 === 0) {
+                        await ScreenOrientation.lockAsync(
+                            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                        )
+                        setOrientationIsLandscape(!orientationIsLandscape)
+                    }
+                }}
             />
         </SafeAreaView>
     )

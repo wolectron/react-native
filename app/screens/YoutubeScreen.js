@@ -8,12 +8,7 @@ function YoutubeScreen () {
     const onStateChange = useCallback((state) => {
       if (state === "ended") {
         setPlaying(false)
-        Alert.alert("video has finished playing!")
       }
-    }, [])
-  
-    const togglePlaying = useCallback(() => {
-      setPlaying((prev) => !prev)
     }, [])
   
     return (
@@ -24,7 +19,6 @@ function YoutubeScreen () {
           videoId={"iee2TATGMyI"}
           onChangeState={onStateChange}
         />
-        <Button title={playing ? "pause" : "play"} onPress={togglePlaying} />
       </SafeAreaView>
     );
   }

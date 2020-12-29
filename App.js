@@ -6,71 +6,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux'
 import store from './app/redux/store'
-import SplashScreen from './app/screens/SplashScreen';
-import HomeScreen from './app/screens/HomeScreen';
 
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './app/screens/LoginScreen';
-import ContentScreen from './app/screens/ContentScreen';
-import YoutubeScreen from './app/screens/YoutubeScreen';
-
-const Stack = createStackNavigator();
-
-Stack.navigationOptions = { header: null };
+import DrawerNavigator from "./app/navigation/DrawerNavigator";
 
 export default function App() {
   return (
     <StoreProvider store={store}>
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator>
-              <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{ 
-                  headerShown: false,
-                  title: 'Home',
-                }}
-              />
-              <Stack.Screen
-                name="Splash"
-                component={SplashScreen}
-                options={{ 
-                  headerShown: false,
-                  title: 'Home',
-                }}
-              />
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{ 
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
-                }}
-              />
-              <Stack.Screen
-                name="Content"
-                component={ContentScreen}
-                options={{
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
-                }}
-              />
-              <Stack.Screen
-                name="Youtube"
-                component={YoutubeScreen}
-                options={{
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
-                }}
-              />
-          </Stack.Navigator>
+        <DrawerNavigator />
         </NavigationContainer>
       </PaperProvider>
       </StoreProvider>
