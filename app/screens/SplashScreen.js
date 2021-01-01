@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
-import AppButton from './AppButton';
+import AppButton from '../components/AppButton';
 import LoginScreen from './LoginScreen';
 
 function OnRegister(){
