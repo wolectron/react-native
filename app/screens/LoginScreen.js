@@ -1,5 +1,6 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Text, Alert } from 'react-native'
+import { ImageBackground, StyleSheet, View, Alert, TouchableOpacity } from 'react-native'
+import { Button, Text } from 'react-native-paper';
 import AppButton from '../components/AppButton'
 import AppTextInput from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
@@ -98,12 +99,32 @@ function LoginScreen(props) {
                     <AppActivityIndicator animating={true} color="0x0000FF"/>
                 ) : (
                     session.sessionState === LOGIN ? (
-                        <AppButton title="        SIGN OUT      " size="sm" backgroundColor="#0030FF" onPress={() => OnLogout()}/>
+                        <Button mode="contained" onPress={() => OnLogout()}>SIGN OUT</Button>
                     ) : (
                         <View>
+                            <Text style={styles.appHeadingText}>
+                                Sign In
+                                {"\n"}
+                            </Text>
+                            <Text style={styles.appText}>
+                                Enter your email and password to login
+                                {"\n"}
+                            </Text>
                             <AppTextInput label="E-mail" onChange={setEmail} isPassword={false}/>
                             <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
-                            <AppButton title="SIGN IN" size="sm" backgroundColor="#0030FF" onPress={() => OnLogin()}/>
+                            <Text>{"\n"}</Text>
+                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnLogin()}><Text>SIGN IN</Text></Button>
+                            <Text>{"\n"}</Text>
+                            <TouchableOpacity style={styles.appTouchableOpacity}>
+                                <Text style={{textDecorationLine: 'underline'}}>Forgot password?</Text>
+                            </TouchableOpacity>
+                            <Text>{"\n"}</Text>
+                            
+                            <Text style={styles.appTouchableOpacity}>If you are a new user, sign up here</Text>
+                            <Text>{"\n"}</Text>
+                            <Button mode="contained"  style={{borderRadius: 15}} color="lightblue" labelStyle={{color: "#FFFFFFFF"}} compact={true} onPress={() => OnLogin()}><Text>SIGN UP</Text></Button>
+                        
+                        
                         </View>
                     )
                 )
@@ -117,8 +138,31 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#000000FF",
+        backgroundColor: "#FFFFFFFF",
     },
+    appButtonContainer: {
+        borderRadius: 15
+    },
+    appButtonText: {
+        color: "red",
+        fontWeight: "bold",
+        alignSelf: "center",
+        //textTransform: "uppercase"
+    },
+    appText:{
+        fontSize: 16,
+        fontWeight: "bold",
+        alignSelf: "center",
+    },
+    appHeadingText:{
+        fontSize: 36,
+        //fontWeight: "bold",
+        alignSelf: "center",
+    },
+    appTouchableOpacity:{
+        alignSelf: "center"
+    }
+
 })
 
 export default LoginScreen

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,13 +23,15 @@ const Header = ({ scene, previous, navigation }) => {
       ? options.headerTitle
       : options.title !== undefined
       ? options.title
-      : scene.route.name;
+      : "test";
+
+  console.log("in header");
 
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
       {previous ? (
         <Appbar.BackAction
-          onPress={navigation.pop}
+          onPress={navigation.goBack}
           color={theme.colors.primary}
         />
       ) : (
@@ -62,11 +65,13 @@ const MainStackNavigator = () => {
       <Stack.Navigator
         initialRouteName="Home"
         headerMode="screen"
+        
         screenOptions={{
           header: ({ scene, previous, navigation }) => (
             <Header scene={scene} previous={previous} navigation={navigation} />
           ),
-        }}
+        }} 
+
       >
         <Stack.Screen
           name="Home"
@@ -76,10 +81,7 @@ const MainStackNavigator = () => {
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
-          options={{ 
-            headerShown: false,
-            title: 'Home',
-          }}
+          options={{ headerTitle: 'Splash' }}
         />
         <Stack.Screen
           name="Content"
@@ -89,12 +91,7 @@ const MainStackNavigator = () => {
         <Stack.Screen
           name="Youtube"
           component={YoutubeScreen}
-          options={{
-            title: null,
-            headerStyle: {
-              backgroundColor: '#ffffff',
-            },
-          }}
+          options={{ headerTitle: 'Details' }}
         />
       </Stack.Navigator>
     );
@@ -135,3 +132,6 @@ const MainStackNavigator = () => {
 }
 
   export { MainStackNavigator, UserStackNavigator, HtmlStackNavigator };
+
+  
+ 

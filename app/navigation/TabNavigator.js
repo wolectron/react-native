@@ -68,7 +68,7 @@ export const BottomTabNavigator = () => {
           name="Login"
           component={UserStackNavigator}
           options={{
-            tabBarIcon: 'bell-outline',
+            tabBarIcon: 'account',
             tabBarColor,
           }}
         />
