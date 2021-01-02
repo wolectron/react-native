@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer"
 
-import { MainStackNavigator, UserStackNavigator } from "./StackNavigator";
-import BottomTabNavigator from "./TabNavigator";
+import { MainStackNavigator, UserStackNavigator } from "./StackNavigator"
+import BottomTabNavigator from "./TabNavigator"
 
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator()
 
 const DrawerNavigator = () => {
   return (
@@ -17,4 +17,4 @@ const DrawerNavigator = () => {
   );
 }
 
-export default DrawerNavigator;
+export default DrawerNavigator

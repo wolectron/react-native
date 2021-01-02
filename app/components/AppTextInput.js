@@ -1,6 +1,5 @@
 import React from 'react'
 import { TextInput, StyleSheet } from 'react-native-paper'
-import { prototype } from 'react-native/Libraries/Image/ImageBackground'
 
 function AppTextInput(props) {
 

@@ -1,9 +1,9 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
-import { MainStackNavigator, UserStackNavigator, HtmlStackNavigator } from "./StackNavigator";
+import { MainStackNavigator, UserStackNavigator, HtmlStackNavigator } from "./StackNavigator"
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 const BottomTabNavigator = () => {
   return (
@@ -12,7 +12,7 @@ const BottomTabNavigator = () => {
       <Tab.Screen name="Login" component={UserStackNavigator} />
       <Tab.Screen name="HTML" component={HtmlStackNavigator} />
     </Tab.Navigator>
-  );
-};
+  )
+}
 
-export default BottomTabNavigator;
+export default BottomTabNavigator

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Text, Alert } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import AppButton from '../components/AppButton'
 import AppTextInput from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'

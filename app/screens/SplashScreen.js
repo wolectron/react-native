@@ -1,14 +1,13 @@
-import React from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
-import AppButton from '../components/AppButton';
-import LoginScreen from './LoginScreen';
+import React from 'react'
+import { ImageBackground, StyleSheet } from 'react-native'
+import AppButton from '../components/AppButton'
 
 function OnRegister(){
-    console.log("Register button pressed");
+    console.log("Register button pressed")
 }
 
 function SplashScreen(props) {
-    console.log(props.navigation);
+    console.log(props.navigation)
     return (
         <ImageBackground 
             style={styles.background}
@@ -16,7 +15,7 @@ function SplashScreen(props) {
             <AppButton title="Login" size="sm" backgroundColor="#007bff" onPress={() => {console.log("Login button pressed"); props.navigation.navigate('Login')}}/>
             <AppButton title="Register" size="sm" backgroundColor="#fc5c65" onPress={OnRegister}/>
         </ImageBackground>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -39,4 +38,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default SplashScreen;
+export default SplashScreen

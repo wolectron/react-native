@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react"
-import { Button, Alert, SafeAreaView, StyleSheet, Platform, StatusBar } from "react-native"
+import { SafeAreaView, StyleSheet, Platform, StatusBar } from "react-native"
 import YoutubePlayer from "react-native-youtube-iframe"
 
 function YoutubeScreen () {
