@@ -65,7 +65,7 @@ export const BottomTabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="Login"
+          name="Profile"
           component={UserStackNavigator}
           options={{
             tabBarIcon: 'account',
