@@ -2,7 +2,7 @@ import * as React from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView } from 'react-native'
 import Carousel from '../components/Carousel'
 
-export default function App() {
+export default function App(props) {
   const videos = [
     {
       id: 'WpIAc9by5iU',
@@ -21,13 +21,21 @@ export default function App() {
     }
   ]
 
+  function navigateContent () {
+    props.navigation.navigate('Content')
+  }
+
+  function navigateYoutube () {
+    props.navigation.navigate('Youtube')
+  }
+
   return (
     <SafeAreaView style={styles.container, styles.background}>
       <ScrollView>
-        <Carousel data={videos} title='first' />
-        <Carousel data={videos} title='second' />
-        <Carousel data={videos} title='third' />
-        <Carousel data={videos} title='fourth' />
+        <Carousel data={videos} title='first' onPress={navigateContent} />
+        <Carousel data={videos} title='second' onPress={navigateContent} />
+        <Carousel data={videos} title='third' onPress={navigateYoutube} />
+        <Carousel data={videos} title='fourth' onPress={navigateYoutube} />
       </ScrollView>
     </SafeAreaView>
   )

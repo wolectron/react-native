@@ -1,18 +1,17 @@
 import * as React from 'react'
-import { Text, View, StyleSheet, FlatList, Image } from 'react-native'
+import { Text, View, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native'
 import Constants from 'expo-constants'
 
-export default function Carousel(props) {
-  const videos = props.data
-
+export default function Carousel({data, title, onPress}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.carousel_title}>{props.title}</Text>
+      <Text style={styles.carousel_title}>{title}</Text>
       <FlatList
         horizontal
-        data={videos}
+        data={data}
         renderItem={({ item }) => (
-          <View style={styles.card_template}>
+          <TouchableHighlight onPress={onPress}>
+          <View style={styles.card_template} >
             <Image
             style={styles.card_image}
             source={{
@@ -25,6 +24,7 @@ export default function Carousel(props) {
               <Text style={styles.card_subtitle}>{item.id}</Text>
             </View>
           </View>
+          </TouchableHighlight>
         )}
       />
     </View>
