@@ -11,7 +11,6 @@ import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotpwdScreen from '../screens/ForgotpwdScreen';
-import HtmlrenderScreen from '../screens/HtmlrenderScreen';
 import ContentScreen from '../screens/ContentScreen';
 import YoutubeScreen from '../screens/YoutubeScreen';
 
@@ -134,24 +133,7 @@ const MainStackNavigator = () => {
       );
   }
 
-  const HtmlStackNavigator = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen
-              name="HTML"
-              component={HtmlrenderScreen}
-              options={{ 
-                title: null,
-                headerStyle: {
-                  backgroundColor: '#ffffff',
-                },
-              }}
-            />
-        </Stack.Navigator>
-    );
-}
-
-  export { MainStackNavigator, UserStackNavigator, HtmlStackNavigator };
+  export { MainStackNavigator, UserStackNavigator };
 
   
  

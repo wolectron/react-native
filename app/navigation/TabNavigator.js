@@ -27,7 +27,7 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { useIsFocused, RouteProp } from '@react-navigation/native';
 
 import overlay from '../components/Overlay';
-import { MainStackNavigator, UserStackNavigator, HtmlStackNavigator } from "./StackNavigator";
+import { MainStackNavigator, UserStackNavigator } from "./StackNavigator";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -69,14 +69,6 @@ export const BottomTabNavigator = () => {
           component={UserStackNavigator}
           options={{
             tabBarIcon: 'account',
-            tabBarColor,
-          }}
-        />
-        <Tab.Screen
-          name="HTML"
-          component={HtmlStackNavigator}
-          options={{
-            tabBarIcon: 'message-text-outline',
             tabBarColor,
           }}
         />

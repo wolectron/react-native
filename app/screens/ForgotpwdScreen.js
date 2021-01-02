@@ -37,6 +37,7 @@ function ForgotpwdScreen(props) {
                 setOtpSent(true);
                 setLoading(false);
             } else {
+                setLoading(false);
                 Alert.alert(
                     "Failed to send OTP to email!",
                     response.data.message,
@@ -48,7 +49,8 @@ function ForgotpwdScreen(props) {
             }
           })
           .catch(function (error) {
-            console.log(error)
+            console.log(error);
+            setLoading(false);
           })
     }
 
