@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Alert, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity } from 'react-native'
 import { Button, Text } from 'react-native-paper';
 import AppButton from '../components/AppButton'
 import AppTextInput from '../components/AppTextInput'
@@ -121,7 +121,7 @@ function ForgotpwdScreen(props) {
     }
 
     return (
-        <View 
+        <SafeAreaView 
             style={styles.background}
             source={require("../assets/splashscreen.png")}>
             {
@@ -161,7 +161,7 @@ function ForgotpwdScreen(props) {
                     )
                 )
             }
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFFFF",
     },
     appButtonContainer: {
         borderRadius: 15

@@ -98,35 +98,28 @@ const MainStackNavigator = () => {
 
   const UserStackNavigator = () => {
       return (
-          <Stack.Navigator>
+          <Stack.Navigator
+              initialRouteName="Login"
+          >
               <Stack.Screen
                 name="Login"
                 component={LoginScreen}
                 options={{ 
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
+                  title: null
                 }}
               />
               <Stack.Screen
                 name="Signup"
                 component={SignupScreen}
                 options={{ 
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
+                  title: null
                 }}
               />
               <Stack.Screen
                 name="Forgotpwd"
                 component={ForgotpwdScreen}
                 options={{ 
-                  title: null,
-                  headerStyle: {
-                    backgroundColor: '#ffffff',
-                  },
+                  title: null
                 }}
               />
           </Stack.Navigator>

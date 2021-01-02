@@ -1,6 +1,6 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Alert, TouchableOpacity } from 'react-native'
-import { Button, Text } from 'react-native-paper';
+import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity } from 'react-native'
+import { Button, Text, useTheme } from 'react-native-paper';
 import AppButton from '../components/AppButton'
 import AppTextInput from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 const axios = require('axios')
+
+
 
 function LoginScreen(props) {
     const [email, setEmail] = React.useState('')
@@ -20,7 +22,9 @@ function LoginScreen(props) {
     const dispatch = useDispatch()
 
     console.log("Session :")
-    console.log(session)
+    console.log(session);
+
+    const theme = useTheme();
 
     function OnLogout(){
         setLoading(true)
@@ -100,9 +104,10 @@ function LoginScreen(props) {
         props.navigation.navigate('Forgotpwd');
     }
 
+    console.log(theme);
     return (
-        <View 
-            style={styles.background}
+        <SafeAreaView 
+            style={[styles.background]}
             source={require("../assets/splashscreen.png")}>
             {
                 loading === true ? (
@@ -132,14 +137,14 @@ function LoginScreen(props) {
                             
                             <Text style={styles.appTouchableOpacity}>If you are a new user, sign up here</Text>
                             <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={{borderRadius: 15}} color="lightblue" labelStyle={{color: "#FFFFFFFF"}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button>
+                            <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button>
                         
                         
                         </View>
                     )
                 )
             }
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFFFF",
+        
     },
     appButtonContainer: {
         borderRadius: 15
