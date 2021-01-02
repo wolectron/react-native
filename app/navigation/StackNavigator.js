@@ -1,17 +1,17 @@
 
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack'
 
-import SplashScreen from '../screens/SplashScreen';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import HtmlrenderScreen from '../screens/HtmlrenderScreen';
-import ContentScreen from '../screens/ContentScreen';
-import YoutubeScreen from '../screens/YoutubeScreen';
+import SplashScreen from '../screens/SplashScreen'
+import HomeScreen from '../screens/HomeScreen'
+import LoginScreen from '../screens/LoginScreen'
+import HtmlrenderScreen from '../screens/HtmlrenderScreen'
+import ContentScreen from '../screens/ContentScreen'
+import YoutubeScreen from '../screens/YoutubeScreen'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
-Stack.navigationOptions = { header: null };
+Stack.navigationOptions = { header: null }
 
 const MainStackNavigator = () => {
     return (
@@ -22,6 +22,9 @@ const MainStackNavigator = () => {
           options={{
             headerShown: false,
             title: 'Home',
+            headerStyle: {
+              backgroundColor: '#000000'
+            },
           }}
         />
         <Stack.Screen
@@ -53,7 +56,7 @@ const MainStackNavigator = () => {
           }}
         />
       </Stack.Navigator>
-    );
+    )
   }
 
   const UserStackNavigator = () => {
@@ -70,7 +73,7 @@ const MainStackNavigator = () => {
                 }}
               />
           </Stack.Navigator>
-      );
+      )
   }
 
   const HtmlStackNavigator = () => {
@@ -87,7 +90,7 @@ const MainStackNavigator = () => {
               }}
             />
         </Stack.Navigator>
-    );
+    )
 }
 
-  export { MainStackNavigator, UserStackNavigator, HtmlStackNavigator };
+  export { MainStackNavigator, UserStackNavigator, HtmlStackNavigator }
