@@ -74,7 +74,7 @@ const theme = {
     primary: '#3498db',
     accent: '#f1c40f',
   },
-  fonts: configureFonts(fontConfig)
+  //fonts: configureFonts(fontConfig)
 }
 
 export default function App() {

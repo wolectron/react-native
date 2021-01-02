@@ -8,7 +8,7 @@ const htmlContent = `
     <head>
         <style>
         table {
-            font-family: arial, sans-serif;
+            font-family: arial;
             border-collapse: collapse;
             width: 100%;
         }
