@@ -9,9 +9,12 @@ import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 const axios = require('axios')
 
-function LoginScreen(props) {
+function ForgotpwdScreen(props) {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [confirmPassword, setConfirmPassword] = React.useState('')
+    const [otp, setOtp] = React.useState('')
+    const [otpSent, setOtpSent] = React.useState(false)
     const [sessionid, setSessionid] = React.useState('')
     const [isLoggedIn, setLoggedIn] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
@@ -22,23 +25,20 @@ function LoginScreen(props) {
     console.log("Session :")
     console.log(session)
 
-    function OnLogout(){
+    function OnForgotPassword(){
         setLoading(true)
 
-        axios.post('https://api.wolectron.com/ott/test1?api=signout', {
-            sessionid: session.sessionId,
+        axios.post('https://api.wolectron.com/ott/test1?api=forgotpassword', {
+            email: email,
           })
           .then(function (response) {
             console.log(response.data)
             if (response.data.status == true) {
-                setSessionid(null)
-                setLoggedIn(false)
-                dispatch(logout())
+                setOtpSent(true);
                 setLoading(false);
-                props.navigation.navigate('Home')
             } else {
                 Alert.alert(
-                    "Logout failed!",
+                    "Failed to send OTP to email!",
                     response.data.message,
                     [
                       { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -52,32 +52,58 @@ function LoginScreen(props) {
           })
     }
 
-    function OnLogin(){
-        console.log(`Login button pressed email=${email}, password=${password}`)
+    function OnResetPassword(){
+        console.log(`Reset password email=${email}, otp=${otp} password=${password}`)
         setLoading(true)
+
+        if (password !== confirmPassword) {
+            setLoading(false);
+            console.log("Password and confirm password do not match!");
+
+            Alert.alert(
+                "Error",
+                "New Password and confirm new password do not match!",
+                [
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ],
+                { cancelable: false }
+              )
+
+            return;
+        }
     
-        axios.post('https://api.wolectron.com/ott/test1?api=signin', {
+        axios.post('https://api.wolectron.com/ott/test1?api=resetpassword', {
             email: email,
-            password: password
+            pwd_reset_code: otp,
+            new_password: password,
+
           })
           .then(function (response) {
             console.log(response.data)
             if (response.data.status == true) {
-                setSessionid(response.data.sessionid)
-                setLoggedIn(true)
+                
+                setOtpSent(false)
 
-                console.log("Logged in!")
-                dispatch(login(response.data.sessionid,response.data.orgid))
-                //login(response.data.sessionid, response.data.orgid)
-                props.navigation.navigate('Home')
+                console.log("Password reset successfully!")
+                Alert.alert(
+                    "Success",
+                    "Password reset successfully",
+                    [
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ],
+                    { cancelable: false }
+                  )
+                
+                props.navigation.navigate('Login')
                 setLoading(false)
             } else {
-                setLoggedIn(false)
+                
                 setLoading(false)
-                console.log("Logged in failed !!!!")
+                setOtpSent(false)
+                console.log("Failed to reset password!")
 
                 Alert.alert(
-                    "Login failed!",
+                    "Failed to reset password",
                     response.data.message,
                     [
                       { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -92,14 +118,6 @@ function LoginScreen(props) {
           })
     }
 
-    function OnSignup(){
-        props.navigation.navigate('Signup');
-    }
-
-    function OnForgotpwd(){
-        props.navigation.navigate('Forgotpwd');
-    }
-
     return (
         <View 
             style={styles.background}
@@ -108,33 +126,35 @@ function LoginScreen(props) {
                 loading === true ? (
                     <AppActivityIndicator animating={true} color="0x0000FF"/>
                 ) : (
-                    session.sessionState === LOGIN ? (
-                        <Button mode="contained" onPress={() => OnLogout()}><Text>SIGN OUT</Text></Button>
-                    ) : (
+                    otpSent == false ? (
                         <View>
                             <Text style={styles.appHeadingText}>
-                                Sign In
+                                Forgot password
                                 {"\n"}
                             </Text>
                             <Text style={styles.appText}>
-                                Enter your email and password to sign in
+                                Enter your email to continue
                                 {"\n"}
                             </Text>
                             <AppTextInput label="E-mail" onChange={setEmail} isPassword={false}/>
-                            <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
                             <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnLogin()}><Text>SIGN IN</Text></Button>
+                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnForgotPassword()}><Text>Get OTP</Text></Button>
+                        </View>
+                    ) : (
+                        <View>
+                            <Text style={styles.appHeadingText}>
+                                Reset password
+                                {"\n"}
+                            </Text>
+                            <Text style={styles.appText}>
+                                Enter OTP and new password 
+                                {"\n"}
+                            </Text>
+                            <AppTextInput label="OTP" onChange={setOtp} isPassword={false}/>
+                            <AppTextInput label="New Password" onChange={setPassword} isPassword={true}/>
+                            <AppTextInput label="Confirm new password" onChange={setConfirmPassword} isPassword={true}/>
                             <Text>{"\n"}</Text>
-                            <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnForgotpwd()}>
-                                <Text style={{textDecorationLine: 'underline'}}>Forgot password?</Text>
-                            </TouchableOpacity>
-                            <Text>{"\n"}</Text>
-                            
-                            <Text style={styles.appTouchableOpacity}>If you are a new user, sign up here</Text>
-                            <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={{borderRadius: 15}} color="lightblue" labelStyle={{color: "#FFFFFFFF"}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button>
-                        
-                        
+                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnResetPassword()}><Text>Reset Password</Text></Button>
                         </View>
                     )
                 )
@@ -175,4 +195,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default LoginScreen
+export default ForgotpwdScreen

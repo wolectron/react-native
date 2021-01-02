@@ -9,6 +9,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SplashScreen from '../screens/SplashScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
+import ForgotpwdScreen from '../screens/ForgotpwdScreen';
 import HtmlrenderScreen from '../screens/HtmlrenderScreen';
 import ContentScreen from '../screens/ContentScreen';
 import YoutubeScreen from '../screens/YoutubeScreen';
@@ -24,8 +26,6 @@ const Header = ({ scene, previous, navigation }) => {
       : options.title !== undefined
       ? options.title
       : "test";
-
-  console.log("in header");
 
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
@@ -103,6 +103,26 @@ const MainStackNavigator = () => {
               <Stack.Screen
                 name="Login"
                 component={LoginScreen}
+                options={{ 
+                  title: null,
+                  headerStyle: {
+                    backgroundColor: '#ffffff',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="Signup"
+                component={SignupScreen}
+                options={{ 
+                  title: null,
+                  headerStyle: {
+                    backgroundColor: '#ffffff',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="Forgotpwd"
+                component={ForgotpwdScreen}
                 options={{ 
                   title: null,
                   headerStyle: {
