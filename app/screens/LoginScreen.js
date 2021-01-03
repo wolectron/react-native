@@ -111,7 +111,7 @@ function LoginScreen(props) {
             source={require("../assets/splashscreen.png")}>
             {
                 loading === true ? (
-                    <AppActivityIndicator animating={true} color="0x0000FF"/>
+                    <AppActivityIndicator animating={true}/>
                 ) : (
                     session.sessionState === LOGIN ? (
                         <Button mode="contained" onPress={() => OnLogout()}><Text>SIGN OUT</Text></Button>

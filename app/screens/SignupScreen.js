@@ -83,7 +83,7 @@ function SignupScreen(props) {
             source={require("../assets/splashscreen.png")}>
             {
                 loading === true ? (
-                    <AppActivityIndicator animating={true} color="0x0000FF"/>
+                    <AppActivityIndicator animating={true}/>
                 ) : (
                     
                         <View>
