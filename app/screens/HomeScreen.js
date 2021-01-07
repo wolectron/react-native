@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native'
+import { useWindowDimensions } from 'react-native';
 import { FlatListSlider } from 'react-native-flatlist-slider'
 import Preview from "../components/Preview"
 
@@ -15,25 +16,31 @@ const images = [
  ]
 
 function HomeScreen(props) {
+  const windowWidth = useWindowDimensions().width;
   return (
     <SafeAreaView style={styles.container}>
       <FlatListSlider
-        data={images}
-        width={275}
-        component={<Preview />}
-        onPress={item => props.navigation.navigate('Content')}
-        indicatorActiveWidth={40}
-        contentContainerStyle={{paddingHorizontal: 16}}
-        autoscroll={false}
-      />
+            data={images}
+            imageKey={'image'}
+            local={false}
+            width={windowWidth}
+            separator={0}
+            loop={true}
+            autoscroll={false}
+            currentIndexCallback={index => console.log('Index', index)}
+            onPress={item => props.navigation.navigate('Content')}
+            indicator
+            animation
+          />
       <FlatListSlider
         data={images}
-        width={275}
+        width={160}
+        height={90}
         component={<Preview />}
-        onPress={item => props.navigation.navigate('Youtube')}
-        indicatorActiveWidth={40}
+        onPress={item => props.navigation.navigate('Content')}
         contentContainerStyle={{paddingHorizontal: 16}}
         autoscroll={false}
+        indicator={false}
       />
     </SafeAreaView>
   )
