@@ -2,6 +2,9 @@ import * as React from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView } from 'react-native'
 import Carousel from '../components/Carousel'
 import TopCarousel from '../components/TopCarousel'
+import { useWindowDimensions } from 'react-native';
+import { FlatListSlider } from 'react-native-flatlist-slider'
+import Preview from "../components/Preview"
 
 export default function App(props) {
   const videos = [
@@ -30,9 +33,34 @@ export default function App(props) {
     props.navigation.navigate('Youtube')
   }
 
+function HomeScreen(props) {
+  const windowWidth = useWindowDimensions().width;
   return (
-    <SafeAreaView style={styles.container, styles.background}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
+        <FlatListSlider
+              data={images}
+              imageKey={'image'}
+              local={false}
+              width={windowWidth}
+              separator={0}
+              loop={true}
+              autoscroll={false}
+              currentIndexCallback={index => console.log('Index', index)}
+              onPress={item => props.navigation.navigate('Content')}
+              indicator
+              animation
+            />
+        <FlatListSlider
+          data={images}
+          width={160}
+          height={90}
+          component={<Preview />}
+          onPress={item => props.navigation.navigate('Content')}
+          contentContainerStyle={{paddingHorizontal: 16}}
+          autoscroll={false}
+          indicator={false}
+        />
         <TopCarousel data={videos} title='first' onPress={navigateContent} />
         <Carousel data={videos} title='first' onPress={navigateContent} />
         <Carousel data={videos} title='second' onPress={navigateContent} />
