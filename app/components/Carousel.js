@@ -20,8 +20,7 @@ export default function Carousel({data, title, onPress}) {
             }}
             />
             <View style={styles.text_container}>
-              <Text style={styles.card_title}>{item.title.toUpperCase().substr(0, 10)+"..."}</Text>
-              <Text style={styles.card_subtitle}>{item.id}</Text>
+              <Text style={styles.card_title}>{item.title.toUpperCase().substr(0, 30)}</Text>
             </View>
           </View>
           </TouchableHighlight>
@@ -39,32 +38,34 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   carousel_title: {
-    color: '#ffffff'
+    color: '#ffffff',
+    marginLeft: 15,
+    fontSize: 20,
   },
   card_template: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 140,
     marginLeft: 10,
     marginTop: 20,
     borderRadius: 10,
   },
   card_image: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 90,
     borderRadius: 10,
   },
   text_container: {
     position: 'absolute',
-    width: 150,
+    width: 160,
     height: 50,
     bottom: 0,
-    paddingVertical: 2,
-    backgroundColor: 'rgba(255,255,255, 1)',
+    paddingVertical: 5,
+    backgroundColor: 'rgba(0,0,0, 1)',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
   card_title: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     marginLeft: 10,
   },
