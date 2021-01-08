@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#000000',
     padding: 8,
-    paddingTop: Constants.statusBarHeight,
+    //paddingTop: Constants.statusBarHeight,
   },
   carousel_title: {
     color: '#ffffff',

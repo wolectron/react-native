@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -50,7 +50,7 @@ const Header = ({ scene, previous, navigation }) => {
       )}
       <Appbar.Content
         title={
-          previous ? title : <MaterialCommunityIcons name="twitter" size={40} />
+          previous ? title : <Image source={require('../assets/flexstream.png')} />
         }
       />
     </Appbar.Header>

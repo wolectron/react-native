@@ -3,10 +3,12 @@ import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView } from 'react
 import Carousel from '../components/Carousel'
 import TopCarousel from '../components/TopCarousel'
 import { useWindowDimensions } from 'react-native';
-import { FlatListSlider } from 'react-native-flatlist-slider'
-import Preview from "../components/Preview"
+import { FlatListSlider } from 'react-native-flatlist-slider' 
+import AppActivityIndicator from '../components/AppActivityIndicator'
 
-export default function App(props) {
+//API
+import HomeList from '../api/HomeList'
+
   const videos = [
     {
       id: 'WpIAc9by5iU',
@@ -34,41 +36,69 @@ export default function App(props) {
   }
 
 function HomeScreen(props) {
+
   const windowWidth = useWindowDimensions().width;
+  const [homelist, setHomelist] = React.useState([]);
+ 
+
+  // HomeList is an async function. It returns a promise.
+  HomeList().then(list => {
+    let hl = [];
+    
+
+    if (list !== null) {
+      console.log("List isnot null");
+      
+      for(var i = 0; i < list.items.length; i++){
+        let listitems = [];
+        for(var j = 0; j < list.items[i].data.items.length; j++){
+          let item = {thumbnail: list.items[i].data.items[j].data.images[0].imageurl, title: list.items[i].data.items[j].data.title, id: list.items[i].data.items[j].data.contentid};
+          listitems.push(item);
+        }
+        hl.push({items: listitems, title: list.items[i].data.title, listid: list.items[i].data.listid});
+      }
+
+      setHomelist(hl);
+      
+    } else {
+      console.log("List is null");
+    }
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <FlatListSlider
-              data={images}
-              imageKey={'image'}
-              local={false}
-              width={windowWidth}
-              separator={0}
-              loop={true}
-              autoscroll={false}
-              currentIndexCallback={index => console.log('Index', index)}
-              onPress={item => props.navigation.navigate('Content')}
-              indicator
-              animation
-            />
-        <FlatListSlider
-          data={images}
-          width={160}
-          height={90}
-          component={<Preview />}
-          onPress={item => props.navigation.navigate('Content')}
-          contentContainerStyle={{paddingHorizontal: 16}}
-          autoscroll={false}
-          indicator={false}
-        />
-        <TopCarousel data={videos} title='first' onPress={navigateContent} />
-        <Carousel data={videos} title='first' onPress={navigateContent} />
-        <Carousel data={videos} title='second' onPress={navigateContent} />
-        <Carousel data={videos} title='third' onPress={navigateYoutube} />
-        <Carousel data={videos} title='fourth' onPress={navigateYoutube} />
-      </ScrollView>
+      {
+        homelist.length === 0 ? (
+                      <AppActivityIndicator animating={true}/>
+                  ) : (
+
+                        <ScrollView>
+                          <FlatListSlider
+                                data={homelist.shift().items}
+                                imageKey={'thumbnail'}
+                                local={false}
+                                width={windowWidth}
+                                separator={0}
+                                loop={true}
+                                autoscroll={false}
+                                currentIndexCallback={index => console.log('Index', index)}
+                                onPress={item => props.navigation.navigate('Content')}
+                                indicator
+                                animation
+                              />
+                          {
+                            homelist.map((list) => {
+                              return (
+                                <Carousel data={list.items} title={list.title} key={list.listid} onPress={item => props.navigation.navigate('Content')}/>
+                              );
+                            })
+                          }
+                        </ScrollView>
+                  )
+      }
     </SafeAreaView>
   )
+
 }
 
 const styles = StyleSheet.create({
@@ -84,3 +114,5 @@ const styles = StyleSheet.create({
     flex: 1
   }
 })
+
+export default HomeScreen
