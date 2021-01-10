@@ -39,42 +39,40 @@ function HomeScreen(props) {
 
   const windowWidth = useWindowDimensions().width;
   const [homelist, setHomelist] = React.useState([]);
+  let renderList = [];
  
 
   // HomeList is an async function. It returns a promise.
   HomeList().then(list => {
-    let hl = [];
-    
 
     if (list !== null) {
-      console.log("List isnot null");
-      
-      for(var i = 0; i < list.items.length; i++){
-        let listitems = [];
-        for(var j = 0; j < list.items[i].data.items.length; j++){
-          let item = {thumbnail: list.items[i].data.items[j].data.images[0].imageurl, title: list.items[i].data.items[j].data.title, id: list.items[i].data.items[j].data.contentid};
-          listitems.push(item);
-        }
-        hl.push({items: listitems, title: list.items[i].data.title, listid: list.items[i].data.listid});
-      }
-
-      setHomelist(hl);
-      
+      setHomelist(list);
     } else {
       console.log("List is null");
     }
   });
 
+  if (homelist.length !== 0) {
+    for(var i = 0; i < homelist.items.length; i++){
+      let listitems = [];
+      for(var j = 0; j < homelist.items[i].data.items.length; j++){
+        let item = {thumbnail: homelist.items[i].data.items[j].data.images[0].imageurl, title: homelist.items[i].data.items[j].data.title, id: homelist.items[i].data.items[j].data.contentid, data: homelist.items[i].data.items[j].data};
+        listitems.push(item);
+      }
+      renderList.push({items: listitems, title: homelist.items[i].data.title, listid: homelist.items[i].data.listid});
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {
-        homelist.length === 0 ? (
+        renderList.length === 0 ? (
                       <AppActivityIndicator animating={true}/>
                   ) : (
 
                         <ScrollView>
                           <FlatListSlider
-                                data={homelist.shift().items}
+                                data={renderList.shift().items}
                                 imageKey={'thumbnail'}
                                 local={false}
                                 width={windowWidth}
@@ -87,9 +85,9 @@ function HomeScreen(props) {
                                 animation
                               />
                           {
-                            homelist.map((list) => {
+                            renderList.map((list) => {
                               return (
-                                <Carousel data={list.items} title={list.title} key={list.listid} onPress={item => props.navigation.navigate('Content')}/>
+                                <Carousel data={list.items} title={list.title} key={list.listid} onPress={item => props.navigation.navigate('Content', {item})}/>
                               );
                             })
                           }

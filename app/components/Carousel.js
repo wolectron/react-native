@@ -9,8 +9,9 @@ export default function Carousel({data, title, onPress}) {
       <FlatList
         horizontal
         data={data}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableHighlight onPress={onPress}>
+          <TouchableHighlight onPress={() => onPress(item)}>
           <View style={styles.card_template} >
             <Image
             style={styles.card_image}
@@ -40,7 +41,8 @@ const styles = StyleSheet.create({
   carousel_title: {
     color: '#ffffff',
     marginLeft: 15,
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: "bold",
   },
   card_template: {
     width: 160,

@@ -12,5 +12,6 @@ export default async function HomeList(){
         return homelist;
     } catch (error) {
         console.log(error);
+        return null;
     }
 }

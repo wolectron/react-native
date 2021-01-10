@@ -4,6 +4,7 @@ import { TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons'; 
 
 
 import SplashScreen from '../screens/SplashScreen';
@@ -39,13 +40,7 @@ const Header = ({ scene, previous, navigation }) => {
             navigation.openDrawer();
           }}
         >
-          <Avatar.Image
-            size={40}
-            source={{
-              uri:
-                'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-            }}
-          />
+          <Octicons name="three-bars" size={34}  color="white"/>
         </TouchableOpacity>
       )}
       <Appbar.Content
@@ -85,7 +80,7 @@ const MainStackNavigator = () => {
         <Stack.Screen
           name="Content"
           component={ContentScreen}
-          options={{ headerTitle: 'Details' }}
+          options={{ headerTitle: '' }}
         />
         <Stack.Screen
           name="Youtube"

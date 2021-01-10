@@ -39,7 +39,7 @@ export function DrawerContent(props) {
   });
 
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
       <Animated.View
         //@ts-ignore
         style={[
