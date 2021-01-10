@@ -23,7 +23,7 @@ function ContentScreen(props) {
     const [videourl, setVideourl] = React.useState(null);
     const windowWidth = useWindowDimensions().width;
 
-    console.log(props.route.params.item.data);
+    console.log(props);
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {

@@ -40,7 +40,7 @@ function HomeScreen(props) {
   const windowWidth = useWindowDimensions().width;
   const [homelist, setHomelist] = React.useState([]);
   let renderList = [];
- 
+  let carouselList = [];
 
   // HomeList is an async function. It returns a promise.
   HomeList().then(list => {
@@ -61,6 +61,8 @@ function HomeScreen(props) {
       }
       renderList.push({items: listitems, title: homelist.items[i].data.title, listid: homelist.items[i].data.listid});
     }
+
+    carouselList = renderList.shift().items;
   }
 
   return (
@@ -72,15 +74,15 @@ function HomeScreen(props) {
 
                         <ScrollView>
                           <FlatListSlider
-                                data={renderList.shift().items}
+                                data={carouselList}
                                 imageKey={'thumbnail'}
                                 local={false}
                                 width={windowWidth}
                                 separator={0}
                                 loop={true}
                                 autoscroll={false}
-                                currentIndexCallback={index => console.log('Index', index)}
-                                onPress={item => props.navigation.navigate('Content')}
+                                currentIndexCallback={index => console.log('Index', carouselList[index])}
+                                onPress={item => props.navigation.navigate('Content', {item:carouselList[item]})}
                                 indicator
                                 animation
                               />
