@@ -8,6 +8,7 @@ export default function Carousel({data, title, onPress}) {
       <Text style={styles.carousel_title}>{title}</Text>
       <FlatList
         horizontal
+        showsHorizontalScrollIndicator={false}
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -34,7 +35,7 @@ export default function Carousel({data, title, onPress}) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    backgroundColor: '#000000',
+    //backgroundColor: '#000000',
     padding: 8,
     //paddingTop: Constants.statusBarHeight,
   },
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     height: 50,
     bottom: 0,
     paddingVertical: 5,
-    backgroundColor: 'rgba(0,0,0, 1)',
+    //backgroundColor: 'rgba(0,0,0, 1)',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },

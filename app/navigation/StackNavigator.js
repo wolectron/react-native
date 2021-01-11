@@ -40,7 +40,7 @@ const Header = ({ scene, previous, navigation }) => {
             navigation.openDrawer();
           }}
         >
-          <Octicons name="three-bars" size={34}  color="white"/>
+          <Octicons name="three-bars" size={34}  color="white" style={{paddingLeft: 5}}/>
         </TouchableOpacity>
       )}
       <Appbar.Content
