@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Image } from 'react-native'
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Modal, Text, Alert } from 'react-native'
 import { Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
@@ -7,6 +7,10 @@ import { WebView } from 'react-native-webview'
 import { useWindowDimensions } from 'react-native';
 import VideoPlayback  from '../api/VideoPlayback'
 import AppActivityIndicator from '../components/AppActivityIndicator'
+import { FontAwesome5 } from '@expo/vector-icons'; 
+
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 const htmlContent = `
     <!DOCTYPE html>
@@ -23,7 +27,12 @@ function ContentScreen(props) {
     const [orientationIsLandscape, setOrientationIsLandscape] = useState(false)
     const [ytplaying, setYtplaying] = useState(false)
     const [videourl, setVideourl] = React.useState(null);
+    const [modalVisible, setModalVisible] = useState(true);
     const windowWidth = useWindowDimensions().width;
+
+    const playImgPaddingLeft = windowWidth/2;
+
+    const session = useSelector(state => state)
 
     console.log(props);
 
@@ -45,6 +54,17 @@ function ContentScreen(props) {
         } else {
             console.log("videourl is null");
         }
+    }
+
+    function OnLogoutPlay(){
+        Alert.alert(
+            "Please sign in to play. Don't have an account? Sign up for free!",
+            response.data.message,
+            [
+              { text: "OK", onPress: () => props.navigation.navigate('Login') }
+            ],
+            { cancelable: false }
+          )
     }
 
     
@@ -79,8 +99,11 @@ function ContentScreen(props) {
     return (
         <SafeAreaView style={styles.container}>
             {
+                session.sessionState === LOGIN ? (
                 videourl === null ? (
-                    <AppActivityIndicator animating={true} style={{ alignItems: "center", justifyContent: 'center', flex: 1}}/>
+                    <View style={{position: "absolute", left: 0, right: 0, alignItems: "center"}}>
+                        <AppActivityIndicator animating={true}/>
+                    </View>
                 ) : ( videourl === "youtube" ? (
                     <SafeAreaView style={styles.container}>
                         <YoutubePlayer
@@ -115,9 +138,26 @@ function ContentScreen(props) {
                                     }
                                 }}
                             />
-                            <WebView source={{ html: htmlContent }} />
+                            
+                            <WebView source={{ html: htmlContent }}/>
                         </SafeAreaView>
-                    )
+                    ) 
+                )
+            ): (
+                <SafeAreaView style={styles.container}>
+                    
+                    <Image source={{uri: props.route.params.item.thumbnail}} style={{height: 300, resizeMode: "cover", flex: 1, opacity: 0.6}}/>
+                    <TouchableOpacity
+                        onPress={() =>  OnLogoutPlay()}
+                        style={{paddingLeft: playImgPaddingLeft-20, paddingTop: 150, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}}
+                    >
+                        <FontAwesome5 name="play-circle" size={44} color="white" style={{paddingLeft: playImgPaddingLeft-22, paddingTop: 150, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}} />
+                    </TouchableOpacity> 
+                    
+                
+                    <WebView source={{ html: htmlContent }}/>
+                
+                </SafeAreaView>
                 )
             }
         </SafeAreaView>

@@ -135,9 +135,9 @@ function LoginScreen(props) {
                             </TouchableOpacity>
                             <Text>{"\n"}</Text>
                             
-                            <Text style={styles.appTouchableOpacity}>If you are a new user, sign up here</Text>
+                            <Text style={styles.appTouchableOpacity}>Don't have an account? Sign up for free to get started</Text>
                             <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button>
+                            <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
                         
                         
                         </View>

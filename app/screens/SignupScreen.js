@@ -88,7 +88,7 @@ function SignupScreen(props) {
                     
                         <View>
                             <Text style={styles.appHeadingText}>
-                                Sign Up
+                                Sign Up for a free account
                                 {"\n"}
                             </Text>
                             <Text style={styles.appText}>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     appHeadingText:{
-        fontSize: 36,
+        fontSize: 34,
         //fontWeight: "bold",
         alignSelf: "center",
     },

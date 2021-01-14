@@ -87,6 +87,27 @@ const MainStackNavigator = () => {
           component={YoutubeScreen}
           options={{ headerTitle: 'Details' }}
         />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ 
+            title: null
+          }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{ 
+            title: null
+          }}
+        />
+        <Stack.Screen
+          name="Forgotpwd"
+          component={ForgotpwdScreen}
+          options={{ 
+            title: null
+          }}
+        />
       </Stack.Navigator>
     )
   }

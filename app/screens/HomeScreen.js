@@ -43,14 +43,16 @@ function HomeScreen(props) {
   let carouselList = [];
 
   // HomeList is an async function. It returns a promise.
-  HomeList().then(list => {
+  if(homelist.length === 0){
+    HomeList().then(list => {
 
-    if (list !== null) {
-      setHomelist(list);
-    } else {
-      console.log("List is null");
-    }
-  });
+      if (list !== null) {
+        setHomelist(list);
+      } else {
+        console.log("List is null");
+      }
+    });
+  }
 
   if (homelist.length !== 0) {
     for(var i = 0; i < homelist.items.length; i++){
@@ -69,7 +71,7 @@ function HomeScreen(props) {
     <SafeAreaView style={styles.container}>
       {
         renderList.length === 0 ? (
-                      <AppActivityIndicator animating={true}/>
+                        <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
                   ) : (
 
                         <ScrollView>
