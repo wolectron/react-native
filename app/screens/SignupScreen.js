@@ -54,7 +54,7 @@ function SignupScreen(props) {
 
                 console.log("Signed up!")
                 
-                props.navigation.navigate('Login')
+                props.navigation.goBack();
                 setLoading(false)
             } else {
                 setSignedUp(false)

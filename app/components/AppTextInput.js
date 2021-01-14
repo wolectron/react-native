@@ -10,7 +10,7 @@ function AppTextInput(props) {
             label={props.label}
             value={text}
             onChangeText={text => {setText(text);props.onChange(text);}}
-            style={ { marginVertical: 5, width: 300, textAlign: 'left' } }
+            style={ { marginVertical: 5, width: 300, textAlign: 'left', alignSelf: 'center' } }
             secureTextEntry={props.isPassword}
             autoCapitalize = 'none'
         />

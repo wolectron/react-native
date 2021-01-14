@@ -39,7 +39,7 @@ function LoginScreen(props) {
                 setLoggedIn(false)
                 dispatch(logout())
                 setLoading(false);
-                props.navigation.navigate('Home')
+                props.navigation.goBack();
             } else {
                 Alert.alert(
                     "Logout failed!",
@@ -73,7 +73,7 @@ function LoginScreen(props) {
                 console.log("Logged in!")
                 dispatch(login(response.data.sessionid,response.data.orgid))
                 //login(response.data.sessionid, response.data.orgid)
-                props.navigation.navigate('Home')
+                props.navigation.goBack();
                 setLoading(false)
             } else {
                 setLoggedIn(false)
