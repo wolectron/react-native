@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Modal, Text, Alert } from 'react-native'
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert } from 'react-native'
 import { Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
@@ -8,6 +8,8 @@ import { useWindowDimensions } from 'react-native';
 import VideoPlayback  from '../api/VideoPlayback'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { FontAwesome5 } from '@expo/vector-icons'; 
+import Modal from 'react-native-modal';
+import {Button, IconButton, Colors} from 'react-native-paper';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
@@ -27,8 +29,9 @@ function ContentScreen(props) {
     const [orientationIsLandscape, setOrientationIsLandscape] = useState(false)
     const [ytplaying, setYtplaying] = useState(false)
     const [videourl, setVideourl] = React.useState(null);
-    const [modalVisible, setModalVisible] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
     const windowWidth = useWindowDimensions().width;
+
 
     const playImgPaddingLeft = windowWidth/2;
 
@@ -57,14 +60,14 @@ function ContentScreen(props) {
     }
 
     function OnLogoutPlay(){
-        Alert.alert(
-            "Please sign in to play. Don't have an account? Sign up for free!",
-            response.data.message,
-            [
-              { text: "OK", onPress: () => props.navigation.navigate('Login') }
-            ],
-            { cancelable: false }
-          )
+        console.log("OnLogoutPlay");
+        setModalVisible(true);
+    }
+
+    function OnModalPress(){
+        setModalVisible(false);
+        props.navigation.navigate('Login');
+
     }
 
     
@@ -101,9 +104,9 @@ function ContentScreen(props) {
             {
                 session.sessionState === LOGIN ? (
                 videourl === null ? (
-                    <View style={{position: "absolute", left: 0, right: 0, alignItems: "center"}}>
-                        <AppActivityIndicator animating={true}/>
-                    </View>
+                    
+                        <AppActivityIndicator animating={true} style={{position: "absolute", left: 0, right: 0, alignItems: "center", justifyContent: 'center', alignSelf: 'center'}}/>
+                
                 ) : ( videourl === "youtube" ? (
                     <SafeAreaView style={styles.container}>
                         <YoutubePlayer
@@ -146,13 +149,22 @@ function ContentScreen(props) {
             ): (
                 <SafeAreaView style={styles.container}>
                     
-                    <Image source={{uri: props.route.params.item.thumbnail}} style={{height: 300, resizeMode: "cover", flex: 1, opacity: 0.6}}/>
-                    <TouchableOpacity
-                        onPress={() =>  OnLogoutPlay()}
-                        style={{paddingLeft: playImgPaddingLeft-20, paddingTop: 150, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}}
-                    >
-                        <FontAwesome5 name="play-circle" size={44} color="white" style={{paddingLeft: playImgPaddingLeft-22, paddingTop: 150, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}} />
-                    </TouchableOpacity> 
+                    <Image source={{uri: props.route.params.item.thumbnail}} style={{height: 300, resizeMode: "cover", flex: 1, opacity: 0.6}} onPress={() =>  OnLogoutPlay()}/>
+                    <IconButton
+                        icon="play-circle-outline"
+                        size={40}
+                        style={{marginLeft: playImgPaddingLeft-20, marginTop: 140, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}} 
+                        onPress={() => OnLogoutPlay()}
+                    />
+
+                    <View>
+                        <Modal isVisible={modalVisible}>
+                            <View style={styles.modalcontent}>
+                            <Text style={styles.modalcontentTitle}>Please sign in to play. {"\n"}Don't have an account? Sign up for free!</Text>
+                            <Button mode="contained" onPress={() => OnModalPress()} dark={true}>SIGN IN</Button>
+                            </View>
+                        </Modal>
+                    </View>
                     
                 
                     <WebView source={{ html: htmlContent }}/>
@@ -168,7 +180,7 @@ function ContentScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+        //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
     video: {
         flex: 1
@@ -178,7 +190,19 @@ const styles = StyleSheet.create({
     },
     poster:{
         resizeMode: "cover"
-    }
+    },
+    modalcontent: {
+        backgroundColor: 'white',
+        padding: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+      },
+    modalcontentTitle: {
+        fontSize: 18,
+        marginBottom: 12,
+      },
 })
 
 export default ContentScreen
