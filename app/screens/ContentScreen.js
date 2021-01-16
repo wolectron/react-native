@@ -29,13 +29,13 @@ const htmlContent = `
             <style>
                 body {
                     font-family: 'Cabin Condensed', sans-serif;
-                    font-size: 0.5em;
+                    font-size: 0.8em;
                     background-color: #000000;
                     color: #FFFFFF;
                 }
                 .title {
                     font-weight: bold;
-                    font-size: 4em;
+                    font-size: 3em;
                 }
                 ul.play-feature {
                     list-style: none;
