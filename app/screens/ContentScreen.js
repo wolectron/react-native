@@ -86,7 +86,7 @@ const htmlContent = `
 function ContentScreen(props) {
     const [orientationIsLandscape, setOrientationIsLandscape] = useState(false)
     const [ytplaying, setYtplaying] = useState(false)
-    const [videourl, setVideourl] = React.useState(null)
+    const [videourl, setVideourl] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const windowWidth = useWindowDimensions().width
 
@@ -94,7 +94,8 @@ function ContentScreen(props) {
 
     const session = useSelector(state => state)
 
-    console.log(props)
+    //console.log(props)
+    console.log("In contentscreen")
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {
@@ -106,14 +107,8 @@ function ContentScreen(props) {
         }, [asyncFn, onSuccess])
     }
 
-    function OnVideoUrlLoaded(videourl){
-        if (videourl !== null) {
-            console.log(videourl)
-        
-            setVideourl(videourl)
-        } else {
-            console.log("videourl is null")
-        }
+    function OnVideoUrlLoaded(url){
+         setVideourl(url);
     }
 
     function OnLogoutPlay(){
@@ -127,11 +122,13 @@ function ContentScreen(props) {
 
     }
 
+    /*
     if(props.route.params.item.data.youtube_videoid === undefined || props.route.params.item.data.youtube_videoid === null || props.route.params.item.data.youtube_videoid === ""){
         useAsync(VideoPlayback, props.route.params.item.data.videoid, OnVideoUrlLoaded)
     } else if(videourl === null){
         setVideourl("youtube")
     }
+    */
     
     
     const onStateChange = useCallback((state) => {
@@ -141,18 +138,23 @@ function ContentScreen(props) {
     }, [])
 
     // Videoplayback is an async function. It returns a promise.
-    /*
-    VideoPlayback(props.route.params.item.data.videoid).then(videourl => {
-
-        if (videourl !== null) {
-            console.log(videourl);
-        
-            setVideourl(videourl);
-        } else {
-            console.log("videourl is null");
+    if (videourl === null){
+        if(props.route.params.item.data.youtube_videoid !== undefined && props.route.params.item.data.youtube_videoid !== null && props.route.params.item.data.youtube_videoid !== "" && videourl !== "youtube"){
+            setVideourl("youtube");
         }
-    });
-    */
+        else {
+            //useAsync(VideoPlayback, props.route.params.item.data.videoid, OnVideoUrlLoaded);
+            VideoPlayback().then(url => {
+
+                if (url !== null) {
+                    setVideourl(url);
+                } else {
+                  console.log("URL is null");
+                  setVideourl("error");
+                }
+            });
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -170,7 +172,7 @@ function ContentScreen(props) {
                             videoId={props.route.params.item.data.youtube_videoid}
                             onChangeState={onStateChange}
                         />
-                        <WebView source={{ html: htmlContent }} />
+                        <WebView source={{ html: props.route.params.item.data.html_content_body }} />
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
@@ -197,7 +199,7 @@ function ContentScreen(props) {
                                 }}
                             />
 
-                            <WebView source={{ html: htmlContent }}/>
+                            <WebView source={{ html: props.route.params.item.data.html_content_body }}/>
                         </SafeAreaView>
                     ) 
                 )
@@ -222,7 +224,7 @@ function ContentScreen(props) {
                     </View>
                     
                 
-                    <WebView source={{ html: htmlContent }}/>
+                    <WebView source={{ html: props.route.params.item.data.html_content_body }}/>
                 
                 </SafeAreaView>
                 )
