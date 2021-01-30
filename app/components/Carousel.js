@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native'
 import Constants from 'expo-constants'
+import {IconButton} from 'react-native-paper'
 
-export default function Carousel({data, title, onPress}) {
+export default function Carousel({data, title, onPress, showDelete = false, onDeletePress}) {
   return (
     <View style={styles.container}>
       <Text style={styles.carousel_title}>{title}</Text>
@@ -12,20 +13,36 @@ export default function Carousel({data, title, onPress}) {
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableHighlight onPress={() => onPress(item)}>
-          <View style={styles.card_template} >
-            <Image
-            style={styles.card_image}
-            source={{
-                uri:
-                item.thumbnail,
-            }}
-            />
+          <View>
+            <TouchableHighlight onPress={() => onPress(item)}>
+            <View style={styles.card_template} >
+              <Image
+              style={styles.card_image}
+              source={{
+                  uri:
+                  item.thumbnail,
+              }}
+              />
+              
+            </View>
+            </TouchableHighlight>
             <View style={styles.text_container}>
-              <Text style={styles.card_title}>{item.title.toUpperCase().substr(0, 30)}</Text>
+                <Text style={styles.card_title}>{item.title.toUpperCase().substr(0, 30)}</Text>
+                {
+                    showDelete === true ? (
+                        <IconButton
+                          icon="trash-can-outline"
+                          size={20}
+                          style={{marginTop: -5, marginRight: -10}} 
+                          onPress={() => onDeletePress(item)}
+                        />
+                    ) : (
+                      <View></View>
+                    )
+                }
+                
             </View>
           </View>
-          </TouchableHighlight>
         )}
       />
     </View>
@@ -63,9 +80,12 @@ const styles = StyleSheet.create({
     height: 50,
     bottom: 0,
     paddingVertical: 5,
-    //backgroundColor: 'rgba(0,0,0, 1)',
+    //backgroundColor: 'rgba(0,0,0, 0.5)',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    flex: 1, 
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   card_title: {
     color: 'white',

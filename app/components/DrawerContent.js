@@ -6,7 +6,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
 import {
   Avatar,
   Caption,
@@ -19,6 +19,10 @@ import {
   useTheme,
 } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp';
+
+const axios = require('axios');
 
 export const PreferencesContext = React.createContext({
     rtl: 'left',
@@ -32,11 +36,40 @@ export function DrawerContent(props) {
   const { rtl, theme, toggleRTL, toggleTheme } = React.useContext(
     PreferencesContext
   );
+  const session = useSelector(state => state);
+  const dispatch = useDispatch();
 
   const translateX = Animated.interpolate(props.progress, {
     inputRange: [0, 0.5, 0.7, 0.8, 1],
     outputRange: [-100, -85, -70, -45, 0],
   });
+
+  function OnLogout(){
+    //setLoading(true)
+
+    axios.post('https://api.wolectron.com/ott/test1?api=signout', {
+        sessionid: session.sessionId,
+      })
+      .then(function (response) {
+        console.log(response.data)
+        if (response.data.status == true) {
+            dispatch(logout())
+            props.navigation.goBack();
+        } else {
+            Alert.alert(
+                "Logout failed!",
+                response.data.message,
+                [
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ],
+                { cancelable: false }
+              )
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+}
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
@@ -50,87 +83,61 @@ export function DrawerContent(props) {
           },
         ]}
       >
-        <View style={styles.userInfoSection}>
-          <TouchableOpacity
-            style={{ marginLeft: 10 }}
-            onPress={() => {
-              props.navigation.toggleDrawer();
-            }}
-          >
-            <Avatar.Image
-              source={{
-                uri:
-                  'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-              }}
-              size={50}
-            />
-          </TouchableOpacity>
-          <Title style={styles.title}>Dawid Urbaniak</Title>
-          <Caption style={styles.caption}>@trensik</Caption>
-          <View style={styles.row}>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                202
-              </Paragraph>
-              <Caption style={styles.caption}>Obserwuje</Caption>
-            </View>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                159
-              </Paragraph>
-              <Caption style={styles.caption}>Obserwujący</Caption>
-            </View>
-          </View>
-        </View>
-        <Drawer.Section style={styles.drawerSection}>
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="account-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Profile"
-            onPress={() => {}}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="tune" color={color} size={size} />
-            )}
-            label="Preferences"
-            onPress={() => {}}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="bookmark-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Bookmarks"
-            onPress={() => {}}
-          />
-        </Drawer.Section>
-        <Drawer.Section title="Preferences">
-          <TouchableRipple onPress={toggleTheme}>
-            <View style={styles.preference}>
-              <Text>Dark Theme</Text>
-              <View pointerEvents="none">
-                <Switch value={theme === 'dark'} />
-              </View>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={toggleRTL}>
-            <View style={styles.preference}>
-              <Text>RTL</Text>
-              <View pointerEvents="none">
-                <Switch value={rtl === 'right'} />
-              </View>
-            </View>
-          </TouchableRipple>
-        </Drawer.Section>
+        
+        
+          {
+            session.sessionState === "LOGIN" ? (
+              <Drawer.Section style={styles.drawerSection}>
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="account-outline"
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Sign Out"
+                    onPress={() => OnLogout()}
+                  />
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="playlist-play"
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="My Lists"
+                    onPress={() => props.navigation.navigate('Mylist')}
+                  />
+              </Drawer.Section>
+            ) : (
+              <Drawer.Section style={styles.drawerSection}>
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="account-outline"
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Sign In"
+                    onPress={() => props.navigation.navigate('Login')}
+                  />
+                      <DrawerItem
+                    icon={({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="account-plus-outline"
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Sign Up"
+                    onPress={() => props.navigation.navigate('Signup')}
+                  />
+              </Drawer.Section>
+            )
+          }
       </Animated.View>
     </DrawerContentScrollView>
   );

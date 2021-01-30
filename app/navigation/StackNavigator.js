@@ -14,6 +14,8 @@ import SignupScreen from '../screens/SignupScreen';
 import ForgotpwdScreen from '../screens/ForgotpwdScreen';
 import ContentScreen from '../screens/ContentScreen';
 import YoutubeScreen from '../screens/YoutubeScreen';
+import AddtolistScreen from '../screens/AddtolistScreen';
+import MylistScreen from '../screens/MylistScreen';
 
 const Stack = createStackNavigator()
 
@@ -108,6 +110,20 @@ const MainStackNavigator = () => {
             title: null
           }}
         />
+        <Stack.Screen
+          name="Addtolist"
+          component={AddtolistScreen}
+          options={{ 
+            title: null
+          }}
+        />
+        <Stack.Screen
+          name="Mylist"
+          component={MylistScreen}
+          options={{ 
+            title: "My Lists"
+          }}
+        />
       </Stack.Navigator>
     )
   }
@@ -136,6 +152,13 @@ const MainStackNavigator = () => {
                 component={ForgotpwdScreen}
                 options={{ 
                   title: null
+                }}
+              />
+              <Stack.Screen
+                name="Mylist"
+                component={MylistScreen}
+                options={{ 
+                  title: "My lists"
                 }}
               />
           </Stack.Navigator>

@@ -104,6 +104,10 @@ function LoginScreen(props) {
         props.navigation.navigate('Forgotpwd');
     }
 
+    function OnMylists(){
+        props.navigation.navigate('Mylist');
+    }
+
     console.log(theme);
     return (
         <SafeAreaView 
@@ -114,7 +118,11 @@ function LoginScreen(props) {
                     <AppActivityIndicator animating={true}/>
                 ) : (
                     session.sessionState === LOGIN ? (
-                        <Button mode="contained" onPress={() => OnLogout()}><Text>SIGN OUT</Text></Button>
+                        <View>
+                            <Button mode="text" onPress={() => OnMylists()}><Text>My lists</Text></Button>
+                            <Button mode="contained" onPress={() => OnLogout()}><Text>SIGN OUT</Text></Button>
+                        </View>
+                        
                     ) : (
                         <View>
                             <Text style={styles.appHeadingText}>

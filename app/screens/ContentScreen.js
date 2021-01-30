@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert } from 'react-native'
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
 import { Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
@@ -26,10 +26,18 @@ const htmlContent = `
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            <script type="text/javascript">
+                function OnAddToList(msg) {
+                    setTimeout(function () {
+                        window.ReactNativeWebView.postMessage(msg)
+                        /*window.postMessage("AddToList")*/
+                    }, 0); // *** here ***
+                }
+            </script>
             <style>
                 body {
                     font-family: 'Cabin Condensed', sans-serif;
-                    font-size: 0.8em;
+                    font-size: 0.9em;
                     background-color: #000000;
                     color: #FFFFFF;
                 }
@@ -77,7 +85,7 @@ const htmlContent = `
                     <br/>
                     Premraaj, Rajinder Verma
                 </p>
-                <div class="btn btn-primary fas fa-plus"> Add to list</div>
+                <div class="btn btn-primary fas fa-plus" onclick="OnAddToList('addtolist');"> Add to list</div>
             </div>
         </body>
     </html>
@@ -94,8 +102,8 @@ function ContentScreen(props) {
 
     const session = useSelector(state => state)
 
-    //console.log(props)
-    console.log("In contentscreen")
+    console.log(props)
+    console.log(`In contentscreen of ${props.route.params.item.data.title}`);
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {
@@ -117,10 +125,43 @@ function ContentScreen(props) {
     }
 
     function OnModalPress(){
-        setModalVisible(false)
-        props.navigation.navigate('Login')
+        setModalVisible(false);
+        props.navigation.navigate('Login');
 
     }
+
+    function onMessage(event){
+        console.log('action result coming from the webview: ', event.nativeEvent.data);
+        if("addtolist" === event.nativeEvent.data){
+            props.navigation.navigate('Addtolist', {item:props.route.params.item});
+        }
+        //onShare();
+    };
+
+    function onError(event){
+        console.log('Error result coming from the webview: ', event.nativeEvent);
+    };
+
+    
+    const onShare = async () => {
+        try {
+        const result = await Share.share({
+            message: 'React Native | A framework for building native apps using React',
+        });
+        if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+            // shared with activity type of result.activityType
+            } else {
+            // shared
+            }
+        } else if (result.action === Share.dismissedAction) {
+            // dismissed
+        }
+        } catch (error) {
+        alert(error.message);
+        }
+    };
+    
 
     /*
     if(props.route.params.item.data.youtube_videoid === undefined || props.route.params.item.data.youtube_videoid === null || props.route.params.item.data.youtube_videoid === ""){
@@ -144,9 +185,11 @@ function ContentScreen(props) {
         }
         else {
             //useAsync(VideoPlayback, props.route.params.item.data.videoid, OnVideoUrlLoaded);
-            VideoPlayback().then(url => {
+            VideoPlayback(props.route.params.item.data.videoid).then(url => {
 
                 if (url !== null) {
+                    console.log("Got VideoPlayback response");
+                    console.log(url);
                     setVideourl(url);
                 } else {
                   console.log("URL is null");
@@ -172,7 +215,10 @@ function ContentScreen(props) {
                             videoId={props.route.params.item.data.youtube_videoid}
                             onChangeState={onStateChange}
                         />
-                        <WebView source={{ html: props.route.params.item.data.html_content_body }} />
+                        <WebView 
+                            source={{ html: props.route.params.item.data.html_content_body }} 
+                            onMessage={onMessage}
+                        />
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
@@ -199,7 +245,12 @@ function ContentScreen(props) {
                                 }}
                             />
 
-                            <WebView source={{ html: props.route.params.item.data.html_content_body }}/>
+                            <WebView 
+                                source={{ html: props.route.params.item.data.html_content_body }} 
+                                //source={{html: htmlContent}}
+                                javaScriptEnabled={true}
+                                onMessage={onMessage}
+                            />
                         </SafeAreaView>
                     ) 
                 )
@@ -224,7 +275,13 @@ function ContentScreen(props) {
                     </View>
                     
                 
-                    <WebView source={{ html: props.route.params.item.data.html_content_body }}/>
+                    <WebView 
+                        source={{ html: props.route.params.item.data.html_content_body }} 
+                        //source={{html: htmlContent}}
+                        javaScriptEnabled={true}
+                        onMessage={onMessage}
+                        onError={onError}
+                    />
                 
                 </SafeAreaView>
                 )
