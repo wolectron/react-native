@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
-import { Video } from 'expo-av'
+import { ActivityIndicator, StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
+import { AVPlaybackStatus, Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { WebView } from 'react-native-webview'
@@ -97,13 +97,14 @@ function ContentScreen(props) {
     const [videourl, setVideourl] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const windowWidth = useWindowDimensions().width
+    const [playerLoaded, setPlayerLoaded] = useState(false)
 
     const playImgPaddingLeft = windowWidth/2
 
     const session = useSelector(state => state)
 
-    console.log(props)
-    console.log(`In contentscreen of ${props.route.params.item.data.title}`);
+    //console.log(props)
+    //console.log(`In contentscreen of ${props.route.params.item.data.title}`);
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {
@@ -188,14 +189,22 @@ function ContentScreen(props) {
             VideoPlayback(props.route.params.item.data.videoid).then(url => {
 
                 if (url !== null) {
-                    console.log("Got VideoPlayback response");
-                    console.log(url);
+                    //console.log("Got VideoPlayback response");
+                    //console.log(url);
                     setVideourl(url);
                 } else {
                   console.log("URL is null");
                   setVideourl("error");
                 }
             });
+        }
+    }
+
+    const updatePlaybackCallback = (status) => {
+        if (status.isLoaded) {
+            if (!playerLoaded) {
+                setPlayerLoaded(true)
+            }
         }
     }
 
@@ -222,8 +231,12 @@ function ContentScreen(props) {
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
+                            <ActivityIndicator
+                                style={!playerLoaded ? styles.video : styles.hideElement}
+                                size="large" color="#FFFFFF"
+                            />
                             <Video
-                                style={styles.video}
+                                style={playerLoaded ? styles.video : styles.hideElement}
                                 source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
                                 posterSource={{uri: props.route.params.item.thumbnail}}
                                 posterStyle={styles.poster}
@@ -232,9 +245,9 @@ function ContentScreen(props) {
                                 volume={1.0}
                                 isMuted={false}
                                 resizeMode="cover"
-                                shouldPlay
-                                style={{ flex: 1 }}
+                                shouldPlay={true}
                                 useNativeControls
+                                onPlaybackStatusUpdate={updatePlaybackCallback}
                                 onFullscreenUpdate={async (state) => {
                                     if(state.fullscreenUpdate % 2 === 0) {
                                         await ScreenOrientation.lockAsync(
@@ -299,6 +312,12 @@ const styles = StyleSheet.create({
     video: {
         flex: 1
     },
+    hideElement: {
+        display: "none"
+    },
+    loadingIcon: {
+        flex: 1
+    },
     info: {
         flex: 1
     },
@@ -312,11 +331,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
         borderColor: 'rgba(0, 0, 0, 0.1)',
-      },
+    },
     modalcontentTitle: {
         fontSize: 18,
         marginBottom: 12,
-      },
+    },
 })
 
 export default ContentScreen
