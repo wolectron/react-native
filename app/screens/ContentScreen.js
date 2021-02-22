@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
-import { Video } from 'expo-av'
-import VideoPlayer from 'expo-video-player'
+import { ActivityIndicator, StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
+import { AVPlaybackStatus, Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { WebView } from 'react-native-webview'
@@ -104,13 +103,14 @@ function ContentScreen(props) {
     const [playerHeight, setPlayerHeight] = React.useState(300);
     const windowWidth = useWindowDimensions().width
     const windowHeight = useWindowDimensions().height
+    const [playerLoaded, setPlayerLoaded] = useState(false)
 
     const playImgPaddingLeft = windowWidth/2
 
     const session = useSelector(state => state)
 
-    console.log(props)
-    console.log(`In contentscreen of ${props.route.params.item.data.title}`);
+    //console.log(props)
+    //console.log(`In contentscreen of ${props.route.params.item.data.title}`);
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {
@@ -197,8 +197,8 @@ function ContentScreen(props) {
             VideoPlayback(props.route.params.item.data.videoid).then(url => {
 
                 if (url !== null) {
-                    console.log("Got VideoPlayback response");
-                    console.log(url);
+                    //console.log("Got VideoPlayback response");
+                    //console.log(url);
                     setVideourl(url);
                 } else {
                   console.log("URL is null");
@@ -208,28 +208,12 @@ function ContentScreen(props) {
         }
     }
 
-    async function switchToLandscape(){
-        
-        await ScreenOrientation.lockAsync(
-            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-        );
-        setOrientationIsLandscape(!orientationIsLandscape);
-
-        setVideoFullscreen(true);
-        setPlayerHeight(windowHeight);
-        
-    }
-
-    async function switchToPortrait(){
-        
-        await ScreenOrientation.lockAsync(
-            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-        );
-        setOrientationIsLandscape(!orientationIsLandscape);
-
-        setVideoFullscreen(false);
-        setPlayerHeight(300);
-        
+    const updatePlaybackCallback = (status) => {
+        if (status.isLoaded) {
+            if (!playerLoaded) {
+                setPlayerLoaded(true)
+            }
+        }
     }
 
     return (
@@ -269,51 +253,32 @@ function ContentScreen(props) {
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
-                            {
-                                
-                                <Video
-                                    style={styles.video}
-                                    source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
-                                    posterSource={{uri: props.route.params.item.thumbnail}}
-                                    posterStyle={styles.poster}
-                                    usePoster={false}
-                                    rate={1.0}
-                                    volume={1.0}
-                                    isMuted={false}
-                                    resizeMode="cover"
-                                    shouldPlay
-                                    style={{ flex: 1 }}
-                                    useNativeControls
-                                    onFullscreenUpdate={async (state) => {
-                                        if(state.fullscreenUpdate % 2 === 0) {
-                                            await ScreenOrientation.lockAsync(
-                                                orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT_UP : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-                                            )
-                                            setOrientationIsLandscape(!orientationIsLandscape)
-                                        }
-                                    }}
-                                />
-                                
-                            }
-                            {
-                                /*
-                                <VideoPlayer
-                                    videoProps={{
-                                        style:styles.video,
-                                    source:{ uri: videourl.videourl[0].adaptive_urls[0].url, },
-                                    resizeMode:Video.RESIZE_MODE_CONTAIN,
-                                    shouldPlay:true,
-                                    useNativeControls:{videoFullscreen}
-                                    }}
-                                    inFullscreen={true}
-                                    showControlsOnLoad={true}
-                                    style={styles.video}
-                                    height={300}
-                                    switchToLandscape={switchToLandscape}
-                                    switchToPortrait={switchToPortrait}
-                                />
-                                */
-                            }
+                            <ActivityIndicator
+                                style={!playerLoaded ? styles.video : styles.hideElement}
+                                size="large" color="#FFFFFF"
+                            />
+                            <Video
+                                style={playerLoaded ? styles.video : styles.hideElement}
+                                source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
+                                posterSource={{uri: props.route.params.item.thumbnail}}
+                                posterStyle={styles.poster}
+                                usePoster={false}
+                                rate={1.0}
+                                volume={1.0}
+                                isMuted={false}
+                                resizeMode="cover"
+                                shouldPlay={true}
+                                useNativeControls
+                                onPlaybackStatusUpdate={updatePlaybackCallback}
+                                onFullscreenUpdate={async (state) => {
+                                    if(state.fullscreenUpdate % 2 === 0) {
+                                        await ScreenOrientation.lockAsync(
+                                            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                                        )
+                                        setOrientationIsLandscape(!orientationIsLandscape)
+                                    }
+                                }}
+                            />
 
                             <WebView 
                                 source={{ html: props.route.params.item.data.html_content_body }} 
@@ -391,6 +356,12 @@ const styles = StyleSheet.create({
     video: {
         flex: 1
     },
+    hideElement: {
+        display: "none"
+    },
+    loadingIcon: {
+        flex: 1
+    },
     info: {
         flex: 1
     },
@@ -404,11 +375,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
         borderColor: 'rgba(0, 0, 0, 0.1)',
-      },
+    },
     modalcontentTitle: {
         fontSize: 18,
         marginBottom: 12,
-      },
+    },
 })
 
 export default ContentScreen
