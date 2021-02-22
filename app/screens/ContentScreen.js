@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
 import { Video } from 'expo-av'
+import VideoPlayer from 'expo-video-player'
 import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { WebView } from 'react-native-webview'
@@ -13,6 +14,8 @@ import {Button, IconButton, Colors} from 'react-native-paper'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
+
+import AddtolistScreen from './AddtolistScreen';
 
 const htmlContent = `
     <!DOCTYPE html>
@@ -96,7 +99,11 @@ function ContentScreen(props) {
     const [ytplaying, setYtplaying] = useState(false)
     const [videourl, setVideourl] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [addtolistModalVisible, setAddtolistModalVisible] = useState(false)
+    const [videoFullscreen, setVideoFullscreen] = useState(false)
+    const [playerHeight, setPlayerHeight] = React.useState(300);
     const windowWidth = useWindowDimensions().width
+    const windowHeight = useWindowDimensions().height
 
     const playImgPaddingLeft = windowWidth/2
 
@@ -133,7 +140,9 @@ function ContentScreen(props) {
     function onMessage(event){
         console.log('action result coming from the webview: ', event.nativeEvent.data);
         if("addtolist" === event.nativeEvent.data){
-            props.navigation.navigate('Addtolist', {item:props.route.params.item});
+            //props.navigation.navigate('Addtolist', {item:props.route.params.item});
+            setAddtolistModalVisible(true);
+
         }
         //onShare();
     };
@@ -199,13 +208,37 @@ function ContentScreen(props) {
         }
     }
 
+    async function switchToLandscape(){
+        
+        await ScreenOrientation.lockAsync(
+            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+        );
+        setOrientationIsLandscape(!orientationIsLandscape);
+
+        setVideoFullscreen(true);
+        setPlayerHeight(windowHeight);
+        
+    }
+
+    async function switchToPortrait(){
+        
+        await ScreenOrientation.lockAsync(
+            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+        );
+        setOrientationIsLandscape(!orientationIsLandscape);
+
+        setVideoFullscreen(false);
+        setPlayerHeight(300);
+        
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {
                 session.sessionState === LOGIN ? (
                 videourl === null ? (
                     
-                        <AppActivityIndicator animating={true} style={{position: "absolute", left: 0, right: 0, alignItems: "center", justifyContent: 'center', alignSelf: 'center'}}/>
+                        <AppActivityIndicator animating={true} style={{flex:1, alignItems: "center", justifyContent: 'center', alignSelf: 'center'}}/>
                 
                 ) : ( videourl === "youtube" ? (
                     <SafeAreaView style={styles.container}>
@@ -219,31 +252,68 @@ function ContentScreen(props) {
                             source={{ html: props.route.params.item.data.html_content_body }} 
                             onMessage={onMessage}
                         />
+                        <Modal 
+                                isVisible={addtolistModalVisible} 
+                                onBackdropPress={() => setAddtolistModalVisible(false)}
+                                onSwipeComplete={() => setAddtolistModalVisible(false)}
+                                propagateSwipe={true}
+                                style={{
+                                    justifyContent: 'flex-end',
+                                    margin: 0,
+                                    height: 200
+                                  }}
+                                > 
+                    
+                                <AddtolistScreen {...props} onClose={() => setAddtolistModalVisible(false)}/>
+                            </Modal>
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
-                            <Video
-                                style={styles.video}
-                                source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
-                                posterSource={{uri: props.route.params.item.thumbnail}}
-                                posterStyle={styles.poster}
-                                usePoster={false}
-                                rate={1.0}
-                                volume={1.0}
-                                isMuted={false}
-                                resizeMode="cover"
-                                shouldPlay
-                                style={{ flex: 1 }}
-                                useNativeControls
-                                onFullscreenUpdate={async (state) => {
-                                    if(state.fullscreenUpdate % 2 === 0) {
-                                        await ScreenOrientation.lockAsync(
-                                            orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-                                        )
-                                        setOrientationIsLandscape(!orientationIsLandscape)
-                                    }
-                                }}
-                            />
+                            {
+                                
+                                <Video
+                                    style={styles.video}
+                                    source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
+                                    posterSource={{uri: props.route.params.item.thumbnail}}
+                                    posterStyle={styles.poster}
+                                    usePoster={false}
+                                    rate={1.0}
+                                    volume={1.0}
+                                    isMuted={false}
+                                    resizeMode="cover"
+                                    shouldPlay
+                                    style={{ flex: 1 }}
+                                    useNativeControls
+                                    onFullscreenUpdate={async (state) => {
+                                        if(state.fullscreenUpdate % 2 === 0) {
+                                            await ScreenOrientation.lockAsync(
+                                                orientationIsLandscape ? ScreenOrientation.OrientationLock.PORTRAIT_UP : ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                                            )
+                                            setOrientationIsLandscape(!orientationIsLandscape)
+                                        }
+                                    }}
+                                />
+                                
+                            }
+                            {
+                                /*
+                                <VideoPlayer
+                                    videoProps={{
+                                        style:styles.video,
+                                    source:{ uri: videourl.videourl[0].adaptive_urls[0].url, },
+                                    resizeMode:Video.RESIZE_MODE_CONTAIN,
+                                    shouldPlay:true,
+                                    useNativeControls:{videoFullscreen}
+                                    }}
+                                    inFullscreen={true}
+                                    showControlsOnLoad={true}
+                                    style={styles.video}
+                                    height={300}
+                                    switchToLandscape={switchToLandscape}
+                                    switchToPortrait={switchToPortrait}
+                                />
+                                */
+                            }
 
                             <WebView 
                                 source={{ html: props.route.params.item.data.html_content_body }} 
@@ -251,6 +321,21 @@ function ContentScreen(props) {
                                 javaScriptEnabled={true}
                                 onMessage={onMessage}
                             />
+
+                            <Modal 
+                                isVisible={addtolistModalVisible} 
+                                onBackdropPress={() => setAddtolistModalVisible(false)}
+                                onSwipeComplete={() => setAddtolistModalVisible(false)}
+                                propagateSwipe={true}
+                                style={{
+                                    justifyContent: 'flex-end',
+                                    margin: 0,
+                                    height: 200
+                                  }}
+                                > 
+                    
+                                <AddtolistScreen {...props} onClose={() => setAddtolistModalVisible(false)}/>
+                            </Modal>
                         </SafeAreaView>
                     ) 
                 )
@@ -261,12 +346,19 @@ function ContentScreen(props) {
                     <IconButton
                         icon="play-circle-outline"
                         size={40}
-                        style={{marginLeft: playImgPaddingLeft-20, marginTop: 140, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}} 
+                        style={{marginLeft: playImgPaddingLeft-40, marginTop: 150, position: 'absolute', flex: 1, justifyContent: 'center', alignItems: 'center'}} 
                         onPress={() => OnLogoutPlay()}
                     />
 
                     <View>
-                        <Modal isVisible={modalVisible}>
+                        <Modal 
+                            isVisible={modalVisible} 
+                            onBackdropPress={() => setModalVisible(false)}
+                            onSwipeComplete={() => setModalVisible(false)}
+                            swipeDirection={['down']}
+                            propagateSwipe={true}
+                            > 
+
                             <View style={styles.modalcontent}>
                             <Text style={styles.modalcontentTitle}>Please sign in to play. {"\n"}Don't have an account? Sign up for free!</Text>
                             <Button mode="contained" onPress={() => OnModalPress()} dark={true}>SIGN IN</Button>

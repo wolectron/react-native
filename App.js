@@ -5,7 +5,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StyleSheet, Text, View } from 'react-native'
 import { configureFonts, DefaultTheme, Provider as PaperProvider, DarkTheme } from 'react-native-paper'
 import { Provider as StoreProvider } from 'react-redux'
-import store from './app/redux/store'
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './app/redux/store'
 import DrawerNavigator from "./app/navigation/DrawerNavigator"
 
 const fontConfig = {
@@ -82,11 +83,13 @@ export default function App() {
 
   return (
     <StoreProvider store={store}>
-      <PaperProvider theme={DarkTheme}>
-        <NavigationContainer theme={navigationTheme}>
-        <DrawerNavigator />
-        </NavigationContainer>
-      </PaperProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <PaperProvider theme={DarkTheme}>
+          <NavigationContainer theme={navigationTheme}>
+          <DrawerNavigator />
+          </NavigationContainer>
+        </PaperProvider>
+      </PersistGate>
     </StoreProvider>
   )
 }

@@ -3,29 +3,39 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 
-export function login(sessionId, orgId){
+export function login(sessionId, org){
     console.log("In login action function");
     return {
         type: LOGIN,
         payload: {
             sessionId: sessionId,
-            orgId: orgId,
+            org: org,
         }
     }
 }
 
-export function logout(){
+export function logout(org){
     return {
         type: LOGOUT,
         payload: {
+            org: org,
+        }
+    }
+}
 
+export function switchApp(sessionState, sessionId, org){
+    return {
+        type: sessionState,
+        payload: {
+            sessionId: sessionId,
+            org: org,
         }
     }
 }
 
 const initialState = {
     sessionId: null,
-    orgId: null,
+    org: null,
     sessionState: LOGOUT,
 }
 
@@ -35,7 +45,7 @@ function sessionReducer(state = initialState, action) {
             return {
                 ...state,
                 sessionId: action.payload.sessionId,
-                orgId: action.payload.orgId,
+                org: action.payload.org,
                 sessionState: LOGIN
             }
         
@@ -43,7 +53,7 @@ function sessionReducer(state = initialState, action) {
             return {
                 ...state,
                 sessionId: null,
-                orgId: null,
+                org: action.payload.org,
                 sessionState: LOGOUT
             }
         

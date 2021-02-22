@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity } from 'react-native'
-import { Button, Text, useTheme, Menu, List } from 'react-native-paper';
+import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, Text, useTheme, Menu, List, DefaultTheme } from 'react-native-paper';
 import AppButton from '../components/AppButton'
-import AppTextInput from '../components/AppTextInput'
+import {AppTextInput, AppTextInputSmall} from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 
-import {Picker} from '@react-native-picker/picker';
+import {Picker, PickerIOS} from '@react-native-picker/picker';
 
 const axios = require('axios')
 
@@ -48,6 +48,7 @@ function AddtolistScreen(props) {
                     }
                     console.log(`userlists ${userlists}`);
 
+                    setPickerValue(userlists[0]);
                     setUserlist(userlists);
                 }
 
@@ -83,8 +84,14 @@ function AddtolistScreen(props) {
         }
     }
 
-    function OnAddToList(listname){
+    function OnAddToList(){
         setLoading(true)
+
+        let listname = newList;
+        
+        if (newList === "") {
+            listname = pickerValue;
+        }
 
         console.log(`Adding to list ${listname}`);
 
@@ -97,7 +104,7 @@ function AddtolistScreen(props) {
           .then(function (response) {
             console.log(response);
             setLoading(false);
-            props.navigation.goBack();
+            props.onClose();
           })
           .catch(function (error) {
             console.log(error)
@@ -122,28 +129,43 @@ function AddtolistScreen(props) {
                             <Button mode="contained" onPress={() => props.navigation.navigate('Login')}><Text>SIGN IN</Text></Button>
                         </View>
                     ) : (
-                        <View>
-                            <Text style={styles.appHeadingText}>
-                                Add content to your list
-                                {"\n"}
-                            </Text>
+                        <View style={{marginBottom: 20}}>
                             
-                                <List.Accordion title="Select a list to add the content to" id="1">
+                            
+                                    <Text style={styles.appText}>Select from existing list</Text>
                                     {
+                                        /*
                                         userList.map((list) => {
                                             return (
-                                                <List.Item title={list} key={list} right={props => <List.Icon {...props} icon="plus" />} onPress={() => OnAddToList(list)}/>
+                                                <List.Item title={list} key={list} right={props => <List.Icon {...props} icon="plus" style={{color:'black'}} color='black'/>} titleStyle={{color: 'black'}}onPress={() => OnAddToList(list)}/>
                                             );
                                         })
+                                        */
+
                                     }
-                                </List.Accordion>
-                                
-                            <Text style={styles.appText}>
-                                OR
-                                {"\n"}
-                            </Text>
-                            <AppTextInput label="Enter new list name" onChange={setNewlist} isPassword={false}/>
-                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnAddToList(newList)}><Text>Add to new list</Text></Button>
+                                    <Picker
+                                        selectedValue={pickerValue}
+                                        style={{height: 100, width: 200}}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            setPickerValue(itemValue)
+                                        }>
+                                            {
+                                                userList.map((list) => {
+                                                    return (
+                                                        <Picker.Item label={list} value={list} key={list}/>
+                                                    );
+                                                })
+                                            }
+                                    </Picker>
+                           
+                            
+                                <Text style={styles.appText}>
+                                    {"\n"}
+                                    OR
+                                </Text>
+                                <AppTextInput label="Enter new list name" onChange={setNewlist} isPassword={false} theme={DefaultTheme}/>
+                            
+                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnAddToList()}><Text>Add to list</Text></Button>
                         </View>
                     )
                 )
@@ -154,10 +176,12 @@ function AddtolistScreen(props) {
 
 const styles = StyleSheet.create({
     background: {
-        flex: 1,
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center",
-        
+        backgroundColor: 'white',
+        height: 400,
+        borderRadius: 10,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     appButtonContainer: {
         borderRadius: 15
@@ -166,17 +190,20 @@ const styles = StyleSheet.create({
         color: "red",
         fontWeight: "bold",
         alignSelf: "center",
+        color: "#000"
         //textTransform: "uppercase"
     },
     appText:{
         fontSize: 16,
         fontWeight: "bold",
         alignSelf: "center",
+        color: "#000"
     },
     appHeadingText:{
         fontSize: 36,
         //fontWeight: "bold",
         alignSelf: "center",
+        color: "#000"
     },
     appTouchableOpacity:{
         alignSelf: "center"

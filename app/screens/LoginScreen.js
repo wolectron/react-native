@@ -2,7 +2,7 @@ import React from 'react'
 import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity } from 'react-native'
 import { Button, Text, useTheme } from 'react-native-paper';
 import AppButton from '../components/AppButton'
-import AppTextInput from '../components/AppTextInput'
+import { AppTextInput } from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
@@ -37,7 +37,7 @@ function LoginScreen(props) {
             if (response.data.status == true) {
                 setSessionid(null)
                 setLoggedIn(false)
-                dispatch(logout())
+                dispatch(logout(session.org))
                 setLoading(false);
                 props.navigation.goBack();
             } else {
@@ -71,7 +71,7 @@ function LoginScreen(props) {
                 setLoggedIn(true)
 
                 console.log("Logged in!")
-                dispatch(login(response.data.sessionid,response.data.orgid))
+                dispatch(login(response.data.sessionid,session.org))
                 //login(response.data.sessionid, response.data.orgid)
                 props.navigation.goBack();
                 setLoading(false)

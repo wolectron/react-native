@@ -20,7 +20,7 @@ import {
 } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp';
+import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp';
 
 const axios = require('axios');
 
@@ -53,9 +53,10 @@ export function DrawerContent(props) {
       .then(function (response) {
         console.log(response.data)
         if (response.data.status == true) {
-            dispatch(logout())
+            dispatch(logout(session.org))
             props.navigation.goBack();
         } else {
+            dispatch(logout(session.org));
             Alert.alert(
                 "Logout failed!",
                 response.data.message,
@@ -69,6 +70,11 @@ export function DrawerContent(props) {
       .catch(function (error) {
         console.log(error)
       })
+}
+
+function OnExploreApps(){
+  dispatch(switchApp(session.sessionState, session.sessionId, null));
+  props.navigation.goBack();
 }
 
   return (
@@ -138,6 +144,20 @@ export function DrawerContent(props) {
               </Drawer.Section>
             )
           }
+          <Drawer.Section style={styles.drawerSection}>
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <MaterialCommunityIcons
+                    name="account-switch"
+                    color={color}
+                    size={size}
+                  />
+                )}
+                label="Explore apps"
+                onPress={() => OnExploreApps()}
+              />
+
+          </Drawer.Section>
       </Animated.View>
     </DrawerContentScrollView>
   );

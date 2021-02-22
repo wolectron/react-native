@@ -2,7 +2,7 @@ import React from 'react'
 import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity } from 'react-native'
 import { Button, Text } from 'react-native-paper';
 import AppButton from '../components/AppButton'
-import AppTextInput from '../components/AppTextInput'
+import { AppTextInput } from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 
