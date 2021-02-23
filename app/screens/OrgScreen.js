@@ -46,7 +46,7 @@ function OrgScreen(props) {
 
   function  onExploreClicked(item) {
     console.log(item);
-    dispatch(switchApp(session.sessionState, session.sessionid,item.data));
+    dispatch(switchApp(session.sessionState, session.sessionId,item.data));
     console.log(session);
   }
 
