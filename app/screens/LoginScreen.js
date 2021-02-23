@@ -62,7 +62,8 @@ function LoginScreen(props) {
     
         axios.post('https://api.wolectron.com/ott/test1?api=signin', {
             email: email,
-            password: password
+            password: password,
+            orgid: "flexstream"
           })
           .then(function (response) {
             console.log(response.data)

@@ -30,6 +30,7 @@ function ForgotpwdScreen(props) {
 
         axios.post('https://api.wolectron.com/ott/test1?api=forgotpassword', {
             email: email,
+            orgid: "flexstream",
           })
           .then(function (response) {
             console.log(response.data)
@@ -78,6 +79,7 @@ function ForgotpwdScreen(props) {
             email: email,
             pwd_reset_code: otp,
             new_password: password,
+            orgid: "flexstream",
 
           })
           .then(function (response) {

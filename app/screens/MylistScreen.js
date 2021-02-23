@@ -39,6 +39,7 @@ function MylistScreen(props) {
   }
 
   // Mylist is an async function. It returns a promise.
+  console.log(mylist);
   if(mylist.length === 0){
     MyList(session.sessionId).then(lists => {
 

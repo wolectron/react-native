@@ -45,7 +45,7 @@ function SignupScreen(props) {
         axios.post('https://api.wolectron.com/ott/test1?api=newuser', {
             email: email,
             password: password,
-            org: "01e06e53bfb6f9e93f467a149e01f33a"
+            org: "flexstream"
           })
           .then(function (response) {
             console.log(response.data)
