@@ -9,7 +9,7 @@ export default async function OrgList(){
 
         console.log(orglist.orgs[0].orgs_app);
 
-        return orglist.orgs[0].orgs_app;
+        return orglist.orgs[0].orgs;
     } catch (error) {
         console.log(error);
         return null;
