@@ -11,6 +11,7 @@ import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 //API
 import OrgList from '../api/OrgList'
+import AddOrg from '../api/AddOrg'
 
 function OrgScreen(props) {
 
@@ -30,15 +31,15 @@ function OrgScreen(props) {
         setOrglist(list);
         console.log(list);
       } else {
-        console.log("List is null");
+        console.log("List is null in orglist");
       }
     });
   }
 
   if (orglist.length !== 0) {
     let listitems = [];
-    for(var i = 0; i < orglist.orgs.length; i++){
-        let item = {thumbnail: orglist.orgs[i].images[0], title: orglist.orgs[i].orgname, id: i.toString(), orgid: orglist.orgs[i].orgid, description: orglist.orgs[i].description, data: orglist.orgs[i]};
+    for(var i = 0; i < orglist.length; i++){
+        let item = {thumbnail: orglist[i].images[0], title: orglist[i].orgname, id: i.toString(), orgid: orglist[i].orgid, description: orglist[i].description, data: orglist[i]};
         listitems.push(item);
     }
     renderList.push({items: listitems});
@@ -48,6 +49,11 @@ function OrgScreen(props) {
     console.log(item);
     dispatch(switchApp(session.sessionState, session.sessionId,item.data));
     console.log(session);
+  }
+
+  function  onAddClicked(item) {
+    console.log(`Add orgid ${item.orgid}`);
+    AddOrg(session.sessionId, item.orgid, item.title);
   }
 
   return (
@@ -65,7 +71,7 @@ function OrgScreen(props) {
                             */
                           }
                             <ScrollView>
-                                <OrgCarousel data={renderList[0].items} onPress={item => onExploreClicked(item)} onAdd={item => console.log(item)} onExplore={item => onExploreClicked(item)}/>
+                                <OrgCarousel data={renderList[0].items} onPress={item => onExploreClicked(item)} onAdd={item => onAddClicked(item)} onExplore={item => onExploreClicked(item)}/>
                             </ScrollView>
                         </View>
                   )

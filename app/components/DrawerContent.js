@@ -93,6 +93,7 @@ function OnExploreApps(){
         
           {
             session.sessionState === "LOGIN" ? (
+
               <Drawer.Section style={styles.drawerSection}>
                   <DrawerItem
                     icon={({ color, size }) => (
@@ -117,6 +118,7 @@ function OnExploreApps(){
                     onPress={() => props.navigation.navigate('Mylist')}
                   />
               </Drawer.Section>
+              
             ) : (
               <Drawer.Section style={styles.drawerSection}>
                   <DrawerItem

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { ActivityIndicator, StyleSheet, SafeAreaView, Platform, StatusBar, Image, View, TouchableOpacity, Text, Alert, Share } from 'react-native'
 import { AVPlaybackStatus, Video } from 'expo-av'
 import YoutubePlayer from "react-native-youtube-iframe"
@@ -109,6 +109,8 @@ function ContentScreen(props) {
 
     const session = useSelector(state => state)
 
+    const youtubePlayerRef = useRef();
+
     //console.log(props)
     //console.log(`In contentscreen of ${props.route.params.item.data.title}`);
 
@@ -187,6 +189,12 @@ function ContentScreen(props) {
       }
     }, [])
 
+    setInterval(function(){
+        youtubePlayerRef.current?.getCurrentTime().then(
+        currentTime => console.log({currentTime})
+      );
+    }, 5000);
+
     // Videoplayback is an async function. It returns a promise.
     if (videourl === null){
         if(props.route.params.item.data.youtube_videoid !== undefined && props.route.params.item.data.youtube_videoid !== null && props.route.params.item.data.youtube_videoid !== "" && videourl !== "youtube"){
@@ -214,6 +222,8 @@ function ContentScreen(props) {
                 setPlayerLoaded(true)
             }
         }
+
+        console.log(status);
     }
 
     return (
@@ -227,6 +237,7 @@ function ContentScreen(props) {
                 ) : ( videourl === "youtube" ? (
                     <SafeAreaView style={styles.container}>
                         <YoutubePlayer
+                            ref={youtubePlayerRef}
                             height={250}
                             play={ytplaying}
                             videoId={props.route.params.item.data.youtube_videoid}

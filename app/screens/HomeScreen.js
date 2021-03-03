@@ -35,18 +35,22 @@ function HomeScreen(props) {
       // HomeList is an async function. It returns a promise.
       if(session.org !== null){
         console.log(`React.useEffect orgid ${session.org.orgid}`);
+      } else {
+        console.log(`React.useEffect org1 ${session.org}`);
       }
       
       if(session.org !== null){
         renderList = [];
         carouselList = [];
 
+        console.log(`React.useEffect org2 ${session.org}`);
+
         HomeList(session.org).then(list => {
 
           if (list !== null) {
             setHomelist(list);
           } else {
-            console.log("List is null");
+            console.log("List is null2");
             dispatch(switchApp(session.sessionState, session.sessionId, null));
           }
         });

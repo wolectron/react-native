@@ -6,9 +6,10 @@ export default async function HomeList(org){
     let homelist = null;
 
     if(org === null){
+        console.log("Org is null in Homelist!");
         return null;
     }
-    
+
     console.log(`Homelist API ${org.contentapi_cdn_baseurl}/${org.orgid}/list/home`);
 
     try {
