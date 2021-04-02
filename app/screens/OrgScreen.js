@@ -2,6 +2,7 @@ import * as React from 'react'
 import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView, View } from 'react-native'
 import {Text} from 'react-native-paper'
 import OrgCarousel from '../components/OrgCarousel'
+import UserorgCarousel from '../components/UserorgCarousel'
 import TopCarousel from '../components/TopCarousel'
 import { useWindowDimensions } from 'react-native';
 import { FlatListSlider } from 'react-native-flatlist-slider' 
@@ -56,6 +57,11 @@ function OrgScreen(props) {
     AddOrg(session.sessionId, item.orgid, item.title);
   }
 
+  function onItemClicked(item){
+    console.log(`OnItemClicked ${item}`);
+    props.props.navigation.navigate('Orgdetails', {org:item});
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {
@@ -70,9 +76,9 @@ function OrgScreen(props) {
                             <Text style={styles.textDesc}>Are you a content creator? Contact us to publish your content. See https://flexstream.app for more details.</Text>
                             */
                           }
-                            <ScrollView>
-                                <OrgCarousel data={renderList[0].items} onPress={item => onExploreClicked(item)} onAdd={item => onAddClicked(item)} onExplore={item => onExploreClicked(item)}/>
-                            </ScrollView>
+                            
+                            <UserorgCarousel data={renderList[0].items} onPress={item => onItemClicked(item)} onAdd={item => onAddClicked(item)} onExplore={item => onExploreClicked(item)}/>
+                            
                         </View>
                   )
       }

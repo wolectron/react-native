@@ -16,6 +16,7 @@ import ContentScreen from '../screens/ContentScreen';
 import YoutubeScreen from '../screens/YoutubeScreen';
 import AddtolistScreen from '../screens/AddtolistScreen';
 import MylistScreen from '../screens/MylistScreen';
+import OrgdetailsScreen from '../screens/OrgdetailsScreen';
 
 const Stack = createStackNavigator()
 
@@ -73,6 +74,11 @@ const MainStackNavigator = () => {
           name="Home"
           component={HomeScreen}
           options={{ headerTitle: 'Home' }}
+        />
+        <Stack.Screen
+          name="Orgdetails"
+          component={OrgdetailsScreen}
+          options={{ headerTitle: '' }}
         />
         <Stack.Screen
           name="Splash"

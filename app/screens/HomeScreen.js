@@ -74,7 +74,7 @@ function HomeScreen(props) {
     <SafeAreaView style={styles.container}>
       {
         session.org === null ? (
-            <OrgScreen/>
+            <OrgScreen props={props}/>
         ) : (
               renderList.length === 0 ? (
                               <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
