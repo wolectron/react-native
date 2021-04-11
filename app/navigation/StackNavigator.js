@@ -1,3 +1,4 @@
+// Logo from graphicsprings.com
 
 import React from 'react';
 import { TouchableOpacity, Image } from 'react-native';

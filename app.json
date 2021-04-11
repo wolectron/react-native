@@ -4,9 +4,9 @@
     "slug": "multiapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/flexstream.png",
+    "icon": "./app/assets/flexstream_big.png",
     "splash": {
-      "image": "./app/assets/flexstream.png",
+      "image": "./app/assets/flexstream_big.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
