@@ -48,7 +48,7 @@ const Header = ({ scene, previous, navigation }) => {
       )}
       <Appbar.Content
         title={
-          previous ? title : <Image source={require('../assets/flexstream.png')} />
+          previous ? title : <Image style={{resizeMode: "contain", height: 50}} source={require('../assets/flexstream.png') } />
         }
       />
     </Appbar.Header>
