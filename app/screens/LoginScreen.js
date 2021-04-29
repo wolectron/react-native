@@ -6,6 +6,7 @@ import { AppTextInput } from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const axios = require('axios')
 
@@ -114,6 +115,7 @@ function LoginScreen(props) {
         <SafeAreaView 
             style={[styles.background]}
             source={require("../assets/splashscreen.png")}>
+                <ScrollView>
             {
                 loading === true ? (
                     <AppActivityIndicator animating={true}/>
@@ -153,6 +155,7 @@ function LoginScreen(props) {
                     )
                 )
             }
+            </ScrollView>
         </SafeAreaView>
     )
 }

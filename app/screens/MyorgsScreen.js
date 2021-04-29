@@ -11,22 +11,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 //API
-import OrgList from '../api/OrgList'
-import AddOrg from '../api/AddOrg'
+import {MyOrgs,DeleteOrgFromMyOrgs} from '../api/MyOrgs'
 
-function OrgScreen(props) {
+function MyOrgsScreen(props) {
 
   const windowWidth = useWindowDimensions().width;
-  const [orglist, setOrglist] = React.useState([]);
+  const [orglist, setOrglist] = React.useState(null);
   const session = useSelector(state => state)
   const dispatch = useDispatch()
   let renderList = [];
 
-  let desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
   // HomeList is an async function. It returns a promise.
-  if(orglist.length === 0){
-    OrgList().then(list => {
+  if(orglist === null){
+    MyOrgs(session.sessionId).then(list => {
 
       if (list !== null) {
         setOrglist(list);
@@ -37,7 +34,7 @@ function OrgScreen(props) {
     });
   }
 
-  if (orglist.length !== 0) {
+  if (orglist !== null && orglist.length !== 0) {
     let listitems = [];
     for(var i = 0; i < orglist.length; i++){
         let item = {thumbnail: orglist[i].images[0], title: orglist[i].orgname, id: i.toString(), orgid: orglist[i].orgid, description: orglist[i].description, data: orglist[i]};
@@ -52,21 +49,24 @@ function OrgScreen(props) {
     console.log(session);
   }
 
-  function  onAddClicked(item) {
-    console.log(`Add orgid ${item.orgid}`);
-    AddOrg(session.sessionId, item.orgid, item.title);
+  function  onRemoveClicked(item) {
+    console.log(`Remove orgid ${item.orgid}`);
+    DeleteOrgFromMyOrgs(session.sessionId, item.orgid);
+    setOrglist([]);
   }
 
   function onItemClicked(item){
     console.log(`OnItemClicked ${item}`);
-    props.props.navigation.navigate('Orgdetails', {org:item});
+    props.navigation.navigate('Orgdetails', {org:item});
   }
 
   return (
     <SafeAreaView style={styles.container}>
       {
-        renderList.length === 0 ? (
+        renderList.length === 0 && orglist === null ? (
                         <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
+                  ) : renderList.length === 0 ? (
+                    <Text style={styles.textHeading}>Add apps to your list to view them here</Text>
                   ) : (
                         <View>
                           {
@@ -77,7 +77,7 @@ function OrgScreen(props) {
                             */
                           }
                             
-                            <UserorgCarousel data={renderList[0].items} buttonAddTitle="Add" onPress={item => onItemClicked(item)} onAdd={item => onAddClicked(item)} onExplore={item => onExploreClicked(item)}/>
+                            <UserorgCarousel data={renderList[0].items} buttonAddTitle="Remove" onPress={item => onItemClicked(item)} onAdd={item => onRemoveClicked(item)} onExplore={item => onExploreClicked(item)}/>
                             
                         </View>
                   )
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default OrgScreen
+export default MyOrgsScreen

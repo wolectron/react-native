@@ -18,6 +18,9 @@ import YoutubeScreen from '../screens/YoutubeScreen';
 import AddtolistScreen from '../screens/AddtolistScreen';
 import MylistScreen from '../screens/MylistScreen';
 import OrgdetailsScreen from '../screens/OrgdetailsScreen';
+import MyOrgsScreen from '../screens/MyorgsScreen';
+
+import { useSelector } from 'react-redux'
 
 const Stack = createStackNavigator()
 
@@ -30,6 +33,8 @@ const Header = ({ scene, previous, navigation }) => {
       : options.title !== undefined
       ? options.title
       : "test";
+
+  const session = useSelector(state => state)
 
   return (
     <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
@@ -49,7 +54,7 @@ const Header = ({ scene, previous, navigation }) => {
       )}
       <Appbar.Content
         title={
-          previous ? title : <Image style={{resizeMode: "contain", height: 50}} source={require('../assets/flexstream.png') } />
+          previous ? title :  session.org === null ? "Flexstream" : session.org.orgname
         }
       />
     </Appbar.Header>
@@ -129,6 +134,13 @@ const MainStackNavigator = () => {
           component={MylistScreen}
           options={{ 
             title: "My Lists"
+          }}
+        />
+        <Stack.Screen
+          name="Myapps"
+          component={MyOrgsScreen}
+          options={{ 
+            title: "My Apps"
           }}
         />
       </Stack.Navigator>

@@ -6,6 +6,7 @@ import { useWindowDimensions } from 'react-native';
 import { FlatListSlider } from 'react-native-flatlist-slider' 
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
+import {Text} from 'react-native-paper'
 
 //API
 import {MyList, DeleteItemFromMyList} from '../api/MyList'
@@ -21,7 +22,7 @@ import {MyList, DeleteItemFromMyList} from '../api/MyList'
 function MylistScreen(props) {
 
   const windowWidth = useWindowDimensions().width;
-  const [mylist, setMylist] = React.useState([]);
+  const [mylist, setMylist] = React.useState(null);
   const [deleteItem, setDeleteItem] = React.useState("");
   let renderList = [];
 
@@ -40,18 +41,20 @@ function MylistScreen(props) {
 
   // Mylist is an async function. It returns a promise.
   
-  if(mylist.length === 0){
+  if(mylist === null){
     MyList(session.sessionId).then(lists => {
       console.log(lists);
       if (lists !== null && lists !== undefined) {
         setMylist(lists);
       } else {
-        console.log(`Lists is ${lists}`);
+        let emptyList = [];
+        setMylist(emptyList);
+        console.log(`MyLists is ${mylist}`);
       }
     });
   }
 
-  if (mylist.length !== 0) {
+  if (mylist !== null && mylist.length !== 0) {
     for(var i = 0; i < mylist.length; i++){
         if(mylist[i].items.length === 0){
             continue;
@@ -69,7 +72,9 @@ function MylistScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       {
-        renderList.length === 0 ? (
+        mylist !== null && renderList.length === 0 ? (
+          <Text style={styles.textHeading}>Add content to lists to access your favorite content here</Text>
+        ) : renderList.length === 0? (
                         <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
                   ) : (
 
@@ -100,7 +105,15 @@ const styles = StyleSheet.create({
   },
   carousel: {
     flex: 1
-  }
+  },
+  textHeading:{
+    fontSize: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginTop: 20,
+    flex: 1
+  },
 })
 
 export default MylistScreen

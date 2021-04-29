@@ -117,6 +117,17 @@ function OnExploreApps(){
                     label="My Lists"
                     onPress={() => props.navigation.navigate('Mylist')}
                   />
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <MaterialCommunityIcons
+                      name="account-switch"
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="My Apps"
+                    onPress={() => props.navigation.navigate('Myapps')}
+                  />
               </Drawer.Section>
               
             ) : (
