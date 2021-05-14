@@ -37,7 +37,7 @@ function MyOrgsScreen(props) {
   if (orglist !== null && orglist.length !== 0) {
     let listitems = [];
     for(var i = 0; i < orglist.length; i++){
-        let item = {thumbnail: orglist[i].images[0], title: orglist[i].orgname, id: i.toString(), orgid: orglist[i].orgid, description: orglist[i].description, data: orglist[i]};
+        let item = {thumbnail: orglist[i].images[0], title: orglist[i].orgname, id: i.toString(), orgid: orglist[i].orgid, description: orglist[i].description, data: orglist[i], buttonAddTitle: "Remove"};
         listitems.push(item);
     }
     renderList.push({items: listitems});
@@ -49,10 +49,11 @@ function MyOrgsScreen(props) {
     console.log(session);
   }
 
-  function  onRemoveClicked(item) {
+  async function  onRemoveClicked(item) {
     console.log(`Remove orgid ${item.orgid}`);
-    DeleteOrgFromMyOrgs(session.sessionId, item.orgid);
-    setOrglist([]);
+    let res = await DeleteOrgFromMyOrgs(session.sessionId, item.orgid);
+    console.log(res);
+    setOrglist(null);
   }
 
   function onItemClicked(item){
@@ -64,9 +65,12 @@ function MyOrgsScreen(props) {
     <SafeAreaView style={styles.container}>
       {
         renderList.length === 0 && orglist === null ? (
-                        <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
+                        <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}/>
                   ) : renderList.length === 0 ? (
-                    <Text style={styles.textHeading}>Add apps to your list to view them here</Text>
+                    <View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+                      <Text style={styles.textHeading}>Add apps to your list to view them here</Text>
+                    </View>
+                    
                   ) : (
                         <View>
                           {
@@ -77,7 +81,7 @@ function MyOrgsScreen(props) {
                             */
                           }
                             
-                            <UserorgCarousel data={renderList[0].items} buttonAddTitle="Remove" onPress={item => onItemClicked(item)} onAdd={item => onRemoveClicked(item)} onExplore={item => onExploreClicked(item)}/>
+                            <UserorgCarousel data={renderList[0].items} onPress={item => onItemClicked(item)} onAdd={item => onRemoveClicked(item)} onExplore={item => onExploreClicked(item)}/>
                             
                         </View>
                   )
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   textHeading:{
-    fontSize: 30,
+    fontSize: 24,
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',

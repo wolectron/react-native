@@ -4,7 +4,8 @@ import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import Constants from 'expo-constants'
 import {IconButton} from 'react-native-paper'
 
-export default function UserorgCarousel({data, title, buttonAddTitle, onPress, onAdd, onExplore}) {
+
+export default function UserorgCarousel({data, title, onPress, onAdd, onExplore}) {
   return (
     <View style={styles.container}>
       <FlatList
@@ -31,7 +32,7 @@ export default function UserorgCarousel({data, title, buttonAddTitle, onPress, o
                 <Text style={styles.card_title}>{item.title.substr(0, 30)}</Text>  
                 <Text style={styles.card_description}>{item.description.substr(0, 100)}</Text> 
                 <View style={{flex:1, flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'flex-start'}}>    
-                    <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAdd(item)}><Text>{buttonAddTitle}</Text></Button>
+                    <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAdd(item)}><Text>{item.buttonAddTitle}</Text></Button>
                     <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onExplore(item)}><Text>Explore</Text></Button> 
                 </View>
             </View>
@@ -133,10 +134,10 @@ const styles = StyleSheet.create({
   appButtonContainer: {
     borderRadius: 15,
     margin: 10
-},
-appButtonText: {
-    fontWeight: "bold",
-    alignSelf: "center",
-    //textTransform: "uppercase"
-},
+  },
+  appButtonText: {
+      fontWeight: "bold",
+      alignSelf: "center",
+      //textTransform: "uppercase"
+  }
 })

@@ -16,6 +16,9 @@ import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 import AddtolistScreen from './AddtolistScreen';
 
+const LOGOUT_SIGNIN_MSG = "Please sign in to play.\nDon't have an account? Sign up for free!";
+const LOGOUT_ADDTOLIST_MSG = "Please sign in to add content to your list.\nDon't have an account? Sign up for free!";
+
 const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -104,6 +107,7 @@ function ContentScreen(props) {
     const windowWidth = useWindowDimensions().width
     const windowHeight = useWindowDimensions().height
     const [playerLoaded, setPlayerLoaded] = useState(false)
+    const [modalMsg, setModalMsg] = React.useState(LOGOUT_SIGNIN_MSG);
 
     const playImgPaddingLeft = windowWidth/2
 
@@ -130,6 +134,7 @@ function ContentScreen(props) {
 
     function OnLogoutPlay(){
         console.log("OnLogoutPlay")
+        setModalMsg(LOGOUT_SIGNIN_MSG);
         setModalVisible(true)
     }
 
@@ -143,8 +148,12 @@ function ContentScreen(props) {
         console.log('action result coming from the webview: ', event.nativeEvent.data);
         if("addtolist" === event.nativeEvent.data){
             //props.navigation.navigate('Addtolist', {item:props.route.params.item});
-            setAddtolistModalVisible(true);
-
+            if(session.sessionState == LOGIN){
+                setAddtolistModalVisible(true);
+            } else {
+                setModalMsg(LOGOUT_ADDTOLIST_MSG);
+                setModalVisible(true);
+            }
         }
         //onShare();
     };
@@ -336,7 +345,7 @@ function ContentScreen(props) {
                             > 
 
                             <View style={styles.modalcontent}>
-                            <Text style={styles.modalcontentTitle}>Please sign in to play. {"\n"}Don't have an account? Sign up for free!</Text>
+                            <Text style={styles.modalcontentTitle}>{modalMsg}</Text>
                             <Button mode="contained" onPress={() => OnModalPress()} dark={true}>SIGN IN</Button>
                             </View>
                         </Modal>

@@ -12,8 +12,9 @@ export default function Carousel({data, title, onPress, showDelete = false, onDe
         showsHorizontalScrollIndicator={false}
         data={data}
         keyExtractor={(item) => item.id}
+        
         renderItem={({ item }) => (
-          <View>
+          <View style={{paddingRight: 10}}>
             <TouchableHighlight onPress={() => onPress(item)}>
             <View style={styles.card_template} >
               <Image

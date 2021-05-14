@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView, View, Image } from 'react-native'
-import { Button, Card, Title, Paragraph, Text, useTheme } from 'react-native-paper'
+import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView, View, Image, Text } from 'react-native'
+import { Button, Card, Title, Paragraph, useTheme } from 'react-native-paper'
+import Modal from 'react-native-modal'
 import OrgCarousel from '../components/OrgCarousel'
 import UserorgCarousel from '../components/UserorgCarousel'
 import TopCarousel from '../components/TopCarousel'
@@ -10,8 +11,11 @@ import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp'
 
+
 //API
 import AddOrg from '../api/AddOrg'
+
+const LOGOUT_ADD_MSG = "Please sign in to add app to your list.\nDon't have an account? Sign up for free!";
 
 function OrgdetailsScreen(props) {
 
@@ -21,7 +25,8 @@ function OrgdetailsScreen(props) {
   const dispatch = useDispatch()
   let renderList = [];
   let item = props.route.params.org;
-  const theme = useTheme();
+  //const theme = useTheme();
+  const [modalVisible, setModalVisible] = React.useState(false)
 
   console.log(props.route.params.org);
 
@@ -34,7 +39,16 @@ function OrgdetailsScreen(props) {
 
   function  onAddClicked(item) {
     console.log(`Add orgid ${item.orgid}`);
-    AddOrg(session.sessionId, item.orgid, item.title);
+    if(session.sessionState === LOGIN){
+      AddOrg(session.sessionId, item.orgid, item.title);
+    } else {
+      setModalVisible(true);
+    }
+  }
+
+  function OnModalPress(){
+    setModalVisible(false);
+    props.navigation.navigate('Login');
   }
 
   return (
@@ -48,10 +62,26 @@ function OrgdetailsScreen(props) {
                   item.thumbnail,
               }}
               />
-        <Text style={styles.textDesc}>{item.description}</Text> 
+        <Text style={styles.textDesc} >{item.description}</Text> 
         <View style={{flex:1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-start'}}>    
-            <Button mode="text"  theme={theme} style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAddClicked(item)}><Text>Add</Text></Button>
-            <Button mode="text"  theme={theme} style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onExploreClicked(item)}><Text>Explore</Text></Button> 
+            <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAddClicked(item)}><Text>Add</Text></Button>
+            <Button mode="text"   style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onExploreClicked(item)}><Text>Explore</Text></Button> 
+        </View>
+
+        <View>
+            <Modal 
+                isVisible={modalVisible} 
+                onBackdropPress={() => setModalVisible(false)}
+                onSwipeComplete={() => setModalVisible(false)}
+                swipeDirection={['down']}
+                propagateSwipe={true}
+                > 
+
+                <View style={styles.modalcontent}>
+                <Text style={styles.modalcontentTitle}>{LOGOUT_ADD_MSG}</Text>
+                <Button mode="contained" onPress={() => OnModalPress()} dark={true}>SIGN IN</Button>
+                </View>
+            </Modal>
         </View>
            
     </SafeAreaView>
@@ -77,6 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     marginTop: 20,
+    color: 'white',
   },
   textDesc:{
     fontSize: 16,
@@ -84,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'justify',
     margin: 10,
+    color: 'white',
   },
   appButtonContainer: {
     borderRadius: 15,
@@ -93,7 +125,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     //textTransform: "uppercase"
- }
+  },
+  modalcontent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalcontentTitle: {
+      fontSize: 18,
+      marginBottom: 12,
+  }
 })
 
 export default OrgdetailsScreen

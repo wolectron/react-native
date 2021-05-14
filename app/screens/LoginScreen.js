@@ -114,45 +114,39 @@ function LoginScreen(props) {
     return (
         <SafeAreaView 
             style={[styles.background]}
-            source={require("../assets/splashscreen.png")}>
-                <ScrollView>
+            //source={require("../assets/splashscreen.png")}
+            >
+                <ScrollView contentContainerStyle={[styles.background]}>
             {
                 loading === true ? (
                     <AppActivityIndicator animating={true}/>
                 ) : (
-                    session.sessionState === LOGIN ? (
-                        <View>
-                            <Button mode="text" onPress={() => OnMylists()}><Text>My lists</Text></Button>
-                            <Button mode="contained" onPress={() => OnLogout()}><Text>SIGN OUT</Text></Button>
-                        </View>
+                
+                    <View>
+                        <Text style={styles.appHeadingText}>
+                            Sign In
+                            {"\n"}
+                        </Text>
+                        <Text style={styles.appText}>
+                            Enter your email and password to sign in
+                            {"\n"}
+                        </Text>
+                        <AppTextInput label="E-mail" onChange={setEmail} isPassword={false}/>
+                        <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
+                        <Text>{"\n"}</Text>
+                        <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnLogin()}><Text>SIGN IN</Text></Button>
+                        <Text>{"\n"}</Text>
+                        <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnForgotpwd()}>
+                            <Text style={{textDecorationLine: 'underline'}}>Forgot password?</Text>
+                        </TouchableOpacity>
+                        <Text>{"\n"}</Text>
                         
-                    ) : (
-                        <View>
-                            <Text style={styles.appHeadingText}>
-                                Sign In
-                                {"\n"}
-                            </Text>
-                            <Text style={styles.appText}>
-                                Enter your email and password to sign in
-                                {"\n"}
-                            </Text>
-                            <AppTextInput label="E-mail" onChange={setEmail} isPassword={false}/>
-                            <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
-                            <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnLogin()}><Text>SIGN IN</Text></Button>
-                            <Text>{"\n"}</Text>
-                            <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnForgotpwd()}>
-                                <Text style={{textDecorationLine: 'underline'}}>Forgot password?</Text>
-                            </TouchableOpacity>
-                            <Text>{"\n"}</Text>
-                            
-                            <Text style={styles.appTouchableOpacity}>Don't have an account? Sign up for free to get started</Text>
-                            <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
-                        
-                        
-                        </View>
-                    )
+                        <Text style={styles.appTouchableOpacity}>Don't have an account? Sign up for free to get started</Text>
+                        <Text>{"\n"}</Text>
+                        <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
+                    
+                    
+                    </View>
                 )
             }
             </ScrollView>
@@ -164,7 +158,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
         
     },
     appButtonContainer: {

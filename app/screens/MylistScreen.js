@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView } from 'react-native'
+import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView, View } from 'react-native'
 import Carousel from '../components/Carousel'
 import TopCarousel from '../components/TopCarousel'
 import { useWindowDimensions } from 'react-native';
@@ -35,7 +35,7 @@ function MylistScreen(props) {
       DeleteItemFromMyList(session.sessionId, item.listname, item.id).then(resp => {
           console.log(resp);
           //setDeleteItem(`${item.listname}-${item.id}`);
-          setMylist([]);
+          setMylist(null);
         });
   }
 
@@ -73,7 +73,9 @@ function MylistScreen(props) {
     <SafeAreaView style={styles.container}>
       {
         mylist !== null && renderList.length === 0 ? (
-          <Text style={styles.textHeading}>Add content to lists to access your favorite content here</Text>
+          <View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+            <Text style={styles.textHeading}>Add content to lists to access your favorite content here</Text>
+          </View>
         ) : renderList.length === 0? (
                         <AppActivityIndicator animating={true} style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}/>
                   ) : (
@@ -111,8 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    marginTop: 20,
-    flex: 1
+    marginTop: 20
   },
 })
 
