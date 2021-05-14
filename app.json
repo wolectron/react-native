@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "multiapp",
-    "slug": "multiapp",
+    "name": "FlexStream",
+    "slug": "flexstream",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon_d.png",
+    "icon": "./app/assets/icon.png",
     "splash": {
       "image": "./app/assets/flexstream2.png",
       "resizeMode": "contain",
@@ -17,14 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.flexstream.flexstreamapp",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "icon": "./app/assets/icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./app/assets/icon.png",
+        "backgroundColor": "#000000"
       },
-      "package": "com.flexstream.flexstream"
+      "package": "com.flexstream.flexstreamapp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./app/assets/favicon.png"

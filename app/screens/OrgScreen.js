@@ -13,6 +13,8 @@ import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 const LOGOUT_ADD_MSG = "Please sign in to add app to your list.\nDon't have an account? Sign up for free!";
 
+// Icon green RGB - 8,151,39
+
 //API
 import OrgList from '../api/OrgList'
 import AddOrg from '../api/AddOrg'
@@ -30,7 +32,7 @@ function OrgScreen(props) {
 
   function OnModalPress(){
     setModalVisible(false);
-    props.navigation.navigate('Login');
+    props.props.navigation.navigate('Login');
   }
 
 
