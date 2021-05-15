@@ -7,6 +7,7 @@ import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
 import { ScrollView } from 'react-native-gesture-handler';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const axios = require('axios')
 
@@ -116,7 +117,7 @@ function LoginScreen(props) {
             style={[styles.background]}
             //source={require("../assets/splashscreen.png")}
             >
-                <ScrollView contentContainerStyle={[styles.background]}>
+                <ScrollView contentContainerStyle={styles.background}>
             {
                 loading === true ? (
                     <AppActivityIndicator animating={true}/>
@@ -125,7 +126,6 @@ function LoginScreen(props) {
                     <View>
                         <Text style={styles.appHeadingText}>
                             Sign In
-                            {"\n"}
                         </Text>
                         <Text style={styles.appText}>
                             Enter your email and password to sign in
@@ -133,17 +133,17 @@ function LoginScreen(props) {
                         </Text>
                         <AppTextInput label="E-mail" onChange={setEmail} isPassword={false}/>
                         <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
-                        <Text>{"\n"}</Text>
+                        
                         <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnLogin()}><Text>SIGN IN</Text></Button>
-                        <Text>{"\n"}</Text>
+                        
                         <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnForgotpwd()}>
                             <Text style={{textDecorationLine: 'underline'}}>Forgot password?</Text>
                         </TouchableOpacity>
                         <Text>{"\n"}</Text>
                         
                         <Text style={styles.appTouchableOpacity}>Don't have an account? Sign up for free to get started</Text>
-                        <Text>{"\n"}</Text>
-                        <Button mode="contained"  style={{borderRadius: 15}} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
+                        
+                        <Button mode="contained"  style={styles.appButtonContainer} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
                     
                     
                     </View>
@@ -154,7 +154,7 @@ function LoginScreen(props) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     background: {
         flex: 1,
         justifyContent: "center",
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
         
     },
     appButtonContainer: {
-        borderRadius: 15
+        borderRadius: 15,
+        margin: "20rem"
     },
     appButtonText: {
         color: "red",
@@ -171,14 +172,15 @@ const styles = StyleSheet.create({
         //textTransform: "uppercase"
     },
     appText:{
-        fontSize: 16,
+        fontSize: "16rem",
         fontWeight: "bold",
         alignSelf: "center",
     },
     appHeadingText:{
-        fontSize: 36,
+        fontSize: "26rem",
         //fontWeight: "bold",
         alignSelf: "center",
+        paddingBottom: "20rem",
     },
     appTouchableOpacity:{
         alignSelf: "center"

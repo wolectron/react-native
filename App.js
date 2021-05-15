@@ -2,8 +2,9 @@ import { StatusBar } from 'expo-status-bar'
 import 'react-native-gesture-handler'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { configureFonts, DefaultTheme, Provider as PaperProvider, DarkTheme } from 'react-native-paper'
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { Provider as StoreProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './app/redux/store'
@@ -80,6 +81,9 @@ const theme = {
 
 export default function App() {
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
+
+  const entireScreenWidth = Dimensions.get('window').width;
+  EStyleSheet.build({$rem: entireScreenWidth / 380});
 
   return (
     <StoreProvider store={store}>

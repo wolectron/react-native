@@ -5,6 +5,8 @@ import AppButton from '../components/AppButton'
 import { AppTextInput } from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
+import { ScrollView } from 'react-native-gesture-handler';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const axios = require('axios')
 
@@ -81,6 +83,7 @@ function SignupScreen(props) {
         <SafeAreaView 
             style={styles.background}
             source={require("../assets/splashscreen.png")}>
+            <ScrollView contentContainerStyle={styles.background}>
             {
                 loading === true ? (
                     <AppActivityIndicator animating={true}/>
@@ -103,11 +106,12 @@ function SignupScreen(props) {
                         </View>
                     )
             }
+            </ScrollView>
         </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     background: {
         flex: 1,
         justifyContent: "center",
@@ -123,14 +127,15 @@ const styles = StyleSheet.create({
         //textTransform: "uppercase"
     },
     appText:{
-        fontSize: 16,
+        fontSize: "16rem",
         fontWeight: "bold",
         alignSelf: "center",
     },
     appHeadingText:{
-        fontSize: 34,
+        fontSize: "26rem",
         //fontWeight: "bold",
         alignSelf: "center",
+        padding: 20,
     },
     appTouchableOpacity:{
         alignSelf: "center"

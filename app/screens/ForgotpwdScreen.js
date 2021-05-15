@@ -6,6 +6,7 @@ import { AppTextInput } from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout, LOGIN, LOGOUT } from '../redux/sessionApp'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const axios = require('axios')
 
@@ -167,7 +168,7 @@ function ForgotpwdScreen(props) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     background: {
         flex: 1,
         justifyContent: "center",
@@ -183,12 +184,12 @@ const styles = StyleSheet.create({
         //textTransform: "uppercase"
     },
     appText:{
-        fontSize: 16,
+        fontSize: "16rem",
         fontWeight: "bold",
         alignSelf: "center",
     },
     appHeadingText:{
-        fontSize: 36,
+        fontSize: "26rem",
         //fontWeight: "bold",
         alignSelf: "center",
     },
