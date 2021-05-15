@@ -34,7 +34,7 @@ function OrgdetailsScreen(props) {
     console.log(item);
     dispatch(switchApp(session.sessionState, session.sessionId,item.data));
     console.log(session);
-    props.navigation.goBack();
+    props.navigation.navigate('Home');
   }
 
   function  onAddClicked(item) {

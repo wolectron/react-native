@@ -47,6 +47,7 @@ function MyOrgsScreen(props) {
     console.log(item);
     dispatch(switchApp(session.sessionState, session.sessionId,item.data));
     console.log(session);
+    props.navigation.goBack();
   }
 
   async function  onRemoveClicked(item) {
