@@ -38,7 +38,7 @@ function WebviewScreen(props) {
     if(props.route.params.page == "terms"){
         uri = "https://flexstream.app/terms.html";
     } else if(props.route.params.page == "privacy"){
-        uri = "https://flexstream.app/privacy-policy.html";
+        uri = "https://flexstream.app/privacy-policy-app.html";
     }
 
     return (
