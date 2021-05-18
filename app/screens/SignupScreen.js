@@ -79,6 +79,14 @@ function SignupScreen(props) {
           })
     }
 
+    function OnTerms(){
+        props.navigation.navigate("Webview", {page: "terms"});
+    }
+
+    function OnPrivacy(){
+        props.navigation.navigate("Webview", {page: "privacy"});
+    }
+
     return (
         <SafeAreaView 
             style={styles.background}
@@ -102,7 +110,19 @@ function SignupScreen(props) {
                             <AppTextInput label="Password" onChange={setPassword} isPassword={true}/>
                             <AppTextInput label="Confirm password" onChange={setConfirmPassword} isPassword={true}/>
                             <Text>{"\n"}</Text>
-                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button>        
+                            <Button mode="contained"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => OnSignup()}><Text>SIGN UP</Text></Button> 
+
+                            <Text style={styles.appTermsText}>By signing up you agree to our </Text>
+                            <View style={styles.appTermsTextView}>
+                                
+                                <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnTerms()}>
+                                    <Text style={{textDecorationLine: 'underline'}}>terms of service</Text>
+                                </TouchableOpacity> 
+                                <Text> and </Text>
+                                <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnPrivacy()}>
+                                    <Text style={{textDecorationLine: 'underline'}}>privacy policy</Text>
+                                </TouchableOpacity>  
+                            </View>   
                         </View>
                     )
             }
@@ -138,6 +158,14 @@ const styles = EStyleSheet.create({
         padding: 20,
     },
     appTouchableOpacity:{
+        alignSelf: "center"
+    },
+    appTermsText: {
+        paddingTop: "10rem",
+        alignSelf: "center"
+    },
+    appTermsTextView:{
+        flexDirection: 'row',
         alignSelf: "center"
     }
 

@@ -14,19 +14,21 @@ import { login, logout, switchApp, LOGIN, LOGOUT } from '../redux/sessionApp'
 
 //API
 import AddOrg from '../api/AddOrg'
+import {MyOrgs,DeleteOrgFromMyOrgs} from '../api/MyOrgs'
 
 const LOGOUT_ADD_MSG = "Please sign in to add app to your list.\nDon't have an account? Sign up for free!";
 
 function OrgdetailsScreen(props) {
 
   const windowWidth = useWindowDimensions().width;
-  const [orglist, setOrglist] = React.useState([]);
+  
   const session = useSelector(state => state)
   const dispatch = useDispatch()
   let renderList = [];
   let item = props.route.params.org;
   //const theme = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false)
+  const [buttonAddTitle, setButtonAddTitle] = React.useState(item.buttonAddTitle);
 
   console.log(props.route.params.org);
 
@@ -37,10 +39,23 @@ function OrgdetailsScreen(props) {
     props.navigation.navigate('Home');
   }
 
-  function  onAddClicked(item) {
+  async function  onRemoveClicked(item) {
+    console.log(`Remove orgid ${item.orgid}`);
+    let res = await DeleteOrgFromMyOrgs(session.sessionId, item.orgid);
+    console.log(res);
+  }
+
+  async function  onAddClicked(item) {
     console.log(`Add orgid ${item.orgid}`);
     if(session.sessionState === LOGIN){
-      AddOrg(session.sessionId, item.orgid, item.title);
+      if(buttonAddTitle == "Remove"){
+        await onRemoveClicked(item);
+        setButtonAddTitle("Add");
+      } else {
+        await AddOrg(session.sessionId, item.orgid, item.title);
+        setButtonAddTitle("Remove");
+      }
+      
     } else {
       setModalVisible(true);
     }
@@ -64,7 +79,7 @@ function OrgdetailsScreen(props) {
               />
         <Text style={styles.textDesc} >{item.description}</Text> 
         <View style={{flex:1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-start'}}>    
-            <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAddClicked(item)}><Text>Add</Text></Button>
+            <Button mode="text"  style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onAddClicked(item)}><Text>{buttonAddTitle}</Text></Button>
             <Button mode="text"   style={styles.appButtonContainer} labelStyle={styles.appButtonText} compact={true} onPress={() => onExploreClicked(item)}><Text>Explore</Text></Button> 
         </View>
 

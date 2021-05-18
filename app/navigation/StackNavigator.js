@@ -19,6 +19,7 @@ import AddtolistScreen from '../screens/AddtolistScreen';
 import MylistScreen from '../screens/MylistScreen';
 import OrgdetailsScreen from '../screens/OrgdetailsScreen';
 import MyOrgsScreen from '../screens/MyorgsScreen';
+import WebviewScreen from '../screens/WebviewScreen';
 
 import { useSelector } from 'react-redux'
 
@@ -141,6 +142,13 @@ const MainStackNavigator = () => {
           component={MyOrgsScreen}
           options={{ 
             title: "My Apps"
+          }}
+        />
+        <Stack.Screen
+          name="Webview"
+          component={WebviewScreen}
+          options={{ 
+            title: ""
           }}
         />
       </Stack.Navigator>

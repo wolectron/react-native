@@ -36,7 +36,7 @@ function MyOrgsScreen(props) {
 
   if (orglist !== null && orglist.length !== 0) {
     let listitems = [];
-    for(var i = 0; i < orglist.length; i++){
+    for(var i = 0; i < orglist.length; i++){ 
         let item = {thumbnail: orglist[i].images[0], title: orglist[i].orgname, id: i.toString(), orgid: orglist[i].orgid, description: orglist[i].description, data: orglist[i], buttonAddTitle: "Remove"};
         listitems.push(item);
     }

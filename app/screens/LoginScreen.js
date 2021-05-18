@@ -111,6 +111,14 @@ function LoginScreen(props) {
         props.navigation.navigate('Mylist');
     }
 
+    function OnTerms(){
+        props.navigation.navigate("Webview", {page: "terms"});
+    }
+
+    function OnPrivacy(){
+        props.navigation.navigate("Webview", {page: "privacy"});
+    }
+
     console.log(theme);
     return (
         <SafeAreaView 
@@ -145,7 +153,17 @@ function LoginScreen(props) {
                         
                         <Button mode="contained"  style={styles.appButtonContainer} compact={true} onPress={() => OnSignup()}><Text>SIGN UP FOR FREE</Text></Button>
                     
-                    
+                        <Text style={styles.appTermsText}>By signing in you agree to our </Text>
+                            <View style={styles.appTermsTextView}>
+                                
+                                <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnTerms()}>
+                                    <Text style={{textDecorationLine: 'underline'}}>terms of service</Text>
+                                </TouchableOpacity> 
+                                <Text> and </Text>
+                                <TouchableOpacity style={styles.appTouchableOpacity} onPress={() => OnPrivacy()}>
+                                    <Text style={{textDecorationLine: 'underline'}}>privacy policy</Text>
+                                </TouchableOpacity>  
+                            </View>  
                     </View>
                 )
             }
@@ -183,6 +201,14 @@ const styles = EStyleSheet.create({
         paddingBottom: "20rem",
     },
     appTouchableOpacity:{
+        alignSelf: "center"
+    },
+    appTermsText: {
+        paddingTop: "10rem",
+        alignSelf: "center"
+    },
+    appTermsTextView:{
+        flexDirection: 'row',
         alignSelf: "center"
     }
 
