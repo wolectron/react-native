@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { ImageBackground, StyleSheet, View, SafeAreaView, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { Button, Text, useTheme, Menu, List, DefaultTheme } from 'react-native-paper';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import AppButton from '../components/AppButton'
 import {AppTextInput, AppTextInputSmall} from '../components/AppTextInput'
 import AppActivityIndicator from '../components/AppActivityIndicator'
@@ -114,8 +115,7 @@ function AddtolistScreen(props) {
 
     return (
         <SafeAreaView 
-            style={[styles.background]}
-            source={require("../assets/splashscreen.png")}>
+            style={[styles.background]}>
             {
                 loading === true ? (
                     <AppActivityIndicator animating={true}/>
@@ -132,7 +132,7 @@ function AddtolistScreen(props) {
                         <View style={{marginBottom: 20}}>
                             
                             
-                                    <Text style={styles.appText}>Select from existing list</Text>
+                                    <Text style={[styles.appText,{marginTop: 20}]}>Select from existing list</Text>
                                     {
                                         /*
                                         userList.map((list) => {
@@ -145,7 +145,7 @@ function AddtolistScreen(props) {
                                     }
                                     <Picker
                                         selectedValue={pickerValue}
-                                        style={{height: 100, width: 200}}
+                                        //style={{height: 100, width: 200, alignSelf: 'center'}}
                                         onValueChange={(itemValue, itemIndex) =>
                                             setPickerValue(itemValue)
                                         }>
@@ -174,12 +174,12 @@ function AddtolistScreen(props) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     background: {
         justifyContent: "flex-end",
         alignItems: "center",
         backgroundColor: 'white',
-        height: 400,
+        //height: "50%",
         borderRadius: 10,
         borderColor: 'rgba(0, 0, 0, 0.1)',
     },
@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     appButtonText: {
-        color: "red",
         fontWeight: "bold",
         alignSelf: "center",
         color: "#000"
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         alignSelf: "center",
-        color: "#000"
+        color: "#000",
     },
     appHeadingText:{
         fontSize: 36,
