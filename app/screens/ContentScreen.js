@@ -5,6 +5,7 @@ import YoutubePlayer from "react-native-youtube-iframe"
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { WebView } from 'react-native-webview'
 import { useWindowDimensions } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet';
 import VideoPlayback  from '../api/VideoPlayback'
 import AppActivityIndicator from '../components/AppActivityIndicator'
 import { FontAwesome5 } from '@expo/vector-icons'
@@ -116,7 +117,7 @@ function ContentScreen(props) {
     const youtubePlayerRef = useRef();
 
     //console.log(props)
-    //console.log(`In contentscreen of ${props.route.params.item.data.title}`);
+    console.log(`In contentscreen of ${props.route.params.item.data.title}`);
 
     function useAsync(asyncFn, param, onSuccess) {
         useEffect(() => {
@@ -198,11 +199,17 @@ function ContentScreen(props) {
       }
     }, [])
 
+    /*
+
     setInterval(function(){
         youtubePlayerRef.current?.getCurrentTime().then(
         currentTime => console.log({currentTime})
       );
     }, 5000);
+
+    */
+
+    console.log(videourl);
 
     // Videoplayback is an async function. It returns a promise.
     if (videourl === null){
@@ -273,12 +280,8 @@ function ContentScreen(props) {
                     </SafeAreaView>
                 ) : (
                         <SafeAreaView style={styles.container}>
-                            <ActivityIndicator
-                                style={!playerLoaded ? styles.video : styles.hideElement}
-                                size="large" color="#FFFFFF"
-                            />
                             <Video
-                                style={playerLoaded ? styles.video : styles.hideElement}
+                                style={styles.video}
                                 source={{ uri: videourl.videourl[0].adaptive_urls[0].url }}
                                 posterSource={{uri: props.route.params.item.thumbnail}}
                                 posterStyle={styles.poster}
@@ -321,6 +324,33 @@ function ContentScreen(props) {
                     
                                 <AddtolistScreen {...props} onClose={() => setAddtolistModalVisible(false)}/>
                             </Modal>
+
+
+                            {
+                            
+                                <Modal 
+                                    isVisible={!playerLoaded} 
+                                    hideModalContentWhileAnimating={true}
+                                    animationIn="fadeIn"
+                                    animationOut="fadeOut"
+                                    propagateSwipe={false}
+                                    style={{
+                                        justifyContent: 'flex-end',
+                                        margin: 0,
+                                        height: 200
+                                    }}
+                                    > 
+                        
+                                    <ActivityIndicator
+                                        //style={!playerLoaded ? styles.video : styles.hideElement}
+                                        style={styles.loading}
+                                        size="large" color="#FFFFFF"
+                                    />
+                                </Modal>
+
+                            }
+
+                            
                         </SafeAreaView>
                     ) 
                 )
@@ -368,7 +398,7 @@ function ContentScreen(props) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
         flex: 1,
         //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
@@ -400,6 +430,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 12,
     },
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: "25%",
+        //bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 2
+      }
 })
 
 export default ContentScreen
